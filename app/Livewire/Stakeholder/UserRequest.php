@@ -40,6 +40,7 @@ class UserRequest extends Component implements HasForms, HasTable
                     function($record){
                         $record->update([
                             'status' => true,
+                            'account_status' => 'approved',
                         ]);
                         Mail::to($record->email)->send(new UserStatus($record->name));
                     }
