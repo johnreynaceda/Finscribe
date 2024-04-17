@@ -25,7 +25,7 @@ class UserRequest extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(User::query()->where('user_type', 'Employee')->where('status', false)->where('account_status', '!=', 'rejected'))
+            ->query(User::query()->where('user_type', 'Employee')->where('account_status', '!=', 'rejected'))
             ->columns([
                 TextColumn::make('name')->label('FULLNAME'),
                 TextColumn::make('email')->label('EMAIL'),
