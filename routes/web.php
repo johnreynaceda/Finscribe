@@ -32,7 +32,7 @@ Route::prefix('/stakeholder')->group(
         Route::get('/dashboard', function(){
             return view('stakeholder.index');
         })->name('stakeholder.dashboard');
-        Route::get('/user-request', function(){
+        Route::get('/user', function(){
             return view('stakeholder.user-request');
         })->name('stakeholder.user-request');
         Route::get('/expense-category', function(){
@@ -44,6 +44,15 @@ Route::prefix('/stakeholder')->group(
         Route::get('/income', function(){
             return view('stakeholder.income.index');
         })->name('stakeholder.income');
+        Route::get('/income-tracking', function(){
+            return view('stakeholder.income.tracking');
+        })->name('stakeholder.income-tracking');
+        Route::get('/expense-tracking', function(){
+            return view('stakeholder.expense.tracking');
+        })->name('stakeholder.expense-tracking');
+        Route::get('/budgeting', function(){
+            return view('stakeholder.budgeting');
+        })->name('stakeholder.budgeting');
     }
 );
 
@@ -52,11 +61,7 @@ Route::prefix('/employee')->group(
     function(){
 
         Route::get('/dashboard', function(){
-            if (auth()->user()->status == false) {
-               return view('employee.waiting');
-            }else{
                 return view('employee.index');
-            }
         })->name('employee.dashboard');
     }
 );

@@ -51,7 +51,7 @@ class ExpenseList extends Component implements HasForms, HasTable
                         return '₱'.number_format($record->total_expense,2);
                     }
                 ),
-                TextColumn::make('note')->label('NOTES'),
+                TextColumn::make('notes')->label('NOTES'),
 
             ])
             ->filters([

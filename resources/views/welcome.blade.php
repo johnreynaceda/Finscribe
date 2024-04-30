@@ -40,9 +40,9 @@
                 </div>
                 <nav :class="{ 'flex': open, 'hidden': !open }"
                     class="flex-col items-center flex-grow hidden md:flex md:flex-row md:justify-end md:pb-0 md:space-x-6">
-                    <a class="py-2 text-sm font-medium text-black hover:text-black/50" href="{{ route('register') }}">No
+                    {{-- <a class="py-2 text-sm font-medium text-black hover:text-black/50" href="{{ route('register') }}">No
                         Account
-                        Yet?</a>
+                        Yet?</a> --}}
 
                     <a href="{{ route('login') }}"
                         class="font-medium text-sm active:bg-fuchsia-50 active:text-black bg-indigo-50 focus-visible:outline-2 cursor-pointer focus-visible:outline-fuchsia-50 focus-visible:outline-offset-2 focus:outline-none group hover:bg-[#0000ff]/5 hover:text-[#2F7A83] justify-center px-6 py-2.5 rounded-xl text-gray-600">Sign

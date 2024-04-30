@@ -10,6 +10,7 @@ use App\Models\ExpenseCategory;
 use App\Models\Income;
 use App\Models\Shop\Product;
 use App\Models\User;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -24,8 +25,10 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Maatwebsite\Excel\Excel;
@@ -55,32 +58,71 @@ class IncomeList extends Component implements HasForms, HasTable
                 ])->modalWidth('xl')->modalSubmitActionLabel('Upload')
             ])
             ->columns([
-                TextColumn::make('date')->date()->label('DATE'),
+                TextColumn::make('date')->date()->label('DATE')->alignRight(),
                 TextColumn::make('total_sales')->label('TOTAL SALES')->formatStateUsing(
                     function($record){
                         return '₱'.number_format($record->total_sales,2);
                     }
+                )->alignRight(),
+                TextColumn::make('total_discount')->label('TOTAL DISCOUNTS')->formatStateUsing(
+                    function($record){
+                        return $record->discount.'%';
+                    }
+                )->alignRight(),
+                TextColumn::make('discount')->label('DISCOUNT')->alignRight()->formatStateUsing(
+                    function($record){
+                        return $record->discount.'%';
+                    }
                 ),
-                TextColumn::make('total_discount')->label('TOTAL DISCOUNTS'),
-                TextColumn::make('discount')->label('DISCOUNT'),
-                TextColumn::make('tax')->label('TAX'),
+                TextColumn::make('tax')->label('TAX')->alignRight()->formatStateUsing(
+                    function($record){
+                        return '₱'.number_format($record->tax,2);
+                    }
+                ),
                 TextColumn::make('gross_profit')->label('GROSS PROFIT')->formatStateUsing(
                     function($record){
                         return '₱'.number_format($record->gross_profit,2);
                     }
-                ),
-                TextColumn::make('gross_profit_percentage')->label('GROSS PROFIT PERCENTAGE'),
+                )->alignRight(),
+                TextColumn::make('gross_profit_percentage')->label('GROSS PROFIT PERCENTAGE')->formatStateUsing(
+                    function($record){
+                        return $record->gross_profit_percentage.'%';
+                    }
+                )->alignRight(),
                 TextColumn::make('total_sales_returned')->label('TOTAL SALES RETURNED')->formatStateUsing(
                     function($record){
                         return '₱'.number_format($record->total_sales_returned,2);
                     }
-                ),
-                TextColumn::make('net_sales')->label('NET SALES'),
-                TextColumn::make('average_net_sales')->label('AVERAGE NET SALES'),
+                )->alignRight(),
+                TextColumn::make('net_sales')->label('NET SALES')->formatStateUsing(
+                    function($record){
+                        return '₱'.number_format($record->net_sales,2);
+                    }
+                )->alignRight(),
+                TextColumn::make('average_net_sales')->label('AVERAGE NET SALES')->formatStateUsing(
+                    function($record){
+                        return '₱'.number_format($record->average_net_sales,2);
+                    }
+                )->alignRight(),
 
             ])
             ->filters([
-                // ...
+                Filter::make('date')
+                ->form([
+                    DatePicker::make('date_from'),
+                    DatePicker::make('date_to'),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['date_from'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('date', '>=', $date),
+                        )
+                        ->when(
+                            $data['date_to'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('date', '<=', $date),
+                        );
+                })
             ])
             ->actions([
 
