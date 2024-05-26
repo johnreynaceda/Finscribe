@@ -10,6 +10,7 @@ use Livewire\Component;
 
 class DataDashboard extends Component
 {
+    public $month, $year;
     public $dataThisWeek = [], $dataLastWeek = [], $labels = [];
 
     public $income = [], $expense = [], $revenue = [];
@@ -52,13 +53,25 @@ class DataDashboard extends Component
 
     public function render()
     {
-        $this->income = Income::sum('total_sales');
+        $this->income = Income::whereYear('date', $this->year)->whereMonth('date', $this->month)->sum('total_sales');
 
     // Calculate total expenses for the week
-    $this->expense = Expense::sum('total_expense');
+    $this->expense = Expense::when(
+        $this->month, function($record){
+           $record->whereYear('date', $this->year)->whereMonth('date', $this->month);
+        }
+    )->sum('total_expense');
 
     // Calculate revenue
     $this->revenue = $this->income - $this->expense;
-        return view('livewire.data-dashboard');
+
+
+        return view('livewire.data-dashboard',[
+            'years' => Income::all()->pluck('date')->map(function ($date) {
+                return date('Y', strtotime($date)); // Extract the year from each date
+            })->unique(),
+        ]);
     }
+
+
 }

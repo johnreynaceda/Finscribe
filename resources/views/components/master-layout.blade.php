@@ -63,7 +63,7 @@
         <div class="flex flex-col relative flex-1 w-0 overflow-hidden">
             <livewire:navbar />
             <main class="relative flex-1 overflow-y-auto focus:outline-none">
-                <div class="py-6">
+                <div class="py-6 px-3 2xl:px-0">
                     <div class="mx-auto py-5 2xl:max-w-7xl">
                         {{ $slot }}
                     </div>

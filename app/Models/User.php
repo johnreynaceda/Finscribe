@@ -51,4 +51,8 @@ class User extends Authenticatable
     public function userInformation(){
         return $this->hasOne(UserInformation::class);
     }
+
+    public function expenses(){
+        return $this->hasMany(Expense::class);
+    }
 }

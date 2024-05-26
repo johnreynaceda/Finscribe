@@ -27,7 +27,8 @@
                     <a href="/">
                         <img src="{{ asset('images/logo.jpg') }}" class="h-14 w-14 object-cover rounded-full"
                             alt="">
-                    </a><button @click="open = !open"
+                    </a>
+                    {{-- <button @click="open = !open"
                         class="items-center justify-center focus:outline-none inline-flex focus:text-black hover:text-[#0000ff] md:hidden p-2 text-black">
                         <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path d="M4 6h16M4 12h16M4 18h16" :class="{ 'hidden': open, 'inline-flex': !open }"
@@ -36,7 +37,12 @@
                             <path d="M6 18L18 6M6 6l12 12" :class="{ 'hidden': !open, 'inline-flex': open }"
                                 class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                         </svg>
-                    </button>
+                    </button> --}}
+                    <div class="md:hidden p-2 ">
+                        <a href="{{ route('login') }}"
+                            class="font-medium text-sm active:bg-fuchsia-50 active:text-black bg-indigo-50 focus-visible:outline-2 cursor-pointer focus-visible:outline-fuchsia-50 focus-visible:outline-offset-2 focus:outline-none group hover:bg-[#0000ff]/5 hover:text-[#2F7A83] justify-center px-6 py-2.5 rounded-xl text-gray-600">Sign
+                            In</a>
+                    </div>
                 </div>
                 <nav :class="{ 'flex': open, 'hidden': !open }"
                     class="flex-col items-center flex-grow hidden md:flex md:flex-row md:justify-end md:pb-0 md:space-x-6">
@@ -52,7 +58,7 @@
         </div>
     </section>
     <section class="relative flex items-center w-full bg-gray-100">
-        <div class="fixed  right-0 w-96 bottom-0 top-0 z-10  bg-[#1A2634] grid place-content-center">
+        <div class="fixed hidden   right-0 w-96 bottom-0 top-0 z-10  bg-[#1A2634] 2xl:grid place-content-center">
             <img src="{{ asset('images/logo.jpg') }}" alt="">
         </div>
         <div class="fixed top-0 right-0 w-full bottom-0 bg-[#2F7A83]">

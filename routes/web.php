@@ -56,6 +56,9 @@ Route::prefix('/stakeholder')->group(
         Route::get('/reports', function(){
             return view('stakeholder.reports');
         })->name('stakeholder.reports');
+        Route::get('/budgeting-category', function(){
+            return view('stakeholder.budgeting-category');
+        })->name('stakeholder.budgeting-category');
     }
 );
 

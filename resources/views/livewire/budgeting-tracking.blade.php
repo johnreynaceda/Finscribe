@@ -38,21 +38,20 @@
                         @endphp
                         <li class="flex flex-1 justify-between items-center">
                             <span>&#8369;{{ number_format($income, 2) }}</span>
-                            <span class="text-sm">Available Funds</span>
+                            <span class="text-sm">Sales Revenue</span>
                         </li>
                         <li class="flex flex-1 justify-between items-center">
                             <span>&#8369;{{ number_format($expense, 2) }}</span>
-                            <span class="text-sm">Overspent in January</span>
+                            <span class="text-sm">Overspent in {{ $month_name ?? '' }}</span>
                         </li>
-                        <li class="flex flex-1 justify-between items-center">
-                            <span>&#8369;{{ number_format($budget, 2) }}</span>
-                            <span class="text-sm">Budgeted For the next month</span>
-                        </li>
+
 
                     </ul>
                     <div class="text-center mt-3">
                         <h1 class="text-sm">To Budget:</h1>
-                        <h1 class="font-bold text-red-600 text-xl">&#8369;{{ number_format($budget, 2) }}</h1>
+                        <h1 class="font-bold text-green-600 text-xl">&#8369;{{ number_format((75 / 100) * $budget, 2) }}
+                        </h1>
+
                     </div>
                 </div>
             </div>
@@ -71,7 +70,10 @@
                         </th>
 
                         <th class="border text-right   px-2 text-sm font-semibold text-gray-700 py-2">
-                            TOTAL AMOUNT
+                            ACTUAL EXPENSE
+                        </th>
+                        <th class="border text-right   px-2 text-sm font-semibold text-gray-700 py-2">
+                            ALLOTED BUDGET
                         </th>
 
 
@@ -82,10 +84,25 @@
 
                     @foreach ($expenses as $record)
                         <tr>
+                            @php
+                                $total_budget = \App\Models\BudgetCategory::where(
+                                    'expense_category_id',
+                                    $record->id,
+                                )->first()->amount;
+                            @endphp
                             <td class=" w-64 border text-right  text-gray-700 font-bold  px-3 py-1">{{ $record->name }}
                             </td>
+
+                            @if ($record->expenses->sum('total_expense') <= $total_budget)
+                                <td class="border text-right font-semibold  text-green-700  px-3 py-1">
+                                    &#8369;{{ number_format($record->expenses->sum('total_expense'), 2) }}</td>
+                            @else
+                                <td class="border text-right font-semibold  text-red-700  px-3 py-1">
+                                    &#8369;{{ number_format($record->expenses->sum('total_expense'), 2) }}</td>
+                            @endif
                             <td class="border text-right  text-gray-700  px-3 py-1">
-                                &#8369;{{ number_format($record->expenses->sum('total_expense'), 2) }}</td>
+                                &#8369;{{ number_format($total_budget, 2) }}
+                            </td>
 
 
                         </tr>
@@ -98,6 +115,8 @@
                         <td class="w-64 border text-right text-gray-700 font-bold px-3 py-1"></td>
                         <td class="border text-right font-bold text-red-700 px-3 py-1">
                             Total: &#8369;{{ number_format($totalExpenses, 2) }}</td>
+                        <td class="border text-right font-bold text-red-700 px-3 py-1">
+                        </td>
                     </tr>
                 </tbody>
             </table>

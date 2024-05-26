@@ -8,6 +8,8 @@ use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Shop\Product;
 use App\Models\User;
+use Carbon\Carbon;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -34,13 +36,27 @@ class ExpenseList extends Component implements HasForms, HasTable
     {
         return $table
             ->query(Expense::query())->headerActions([
-                CreateAction::make('new_expense')->form([
+                CreateAction::make('new_expense')->action(
+                    function($record, $data){
+                        Expense::create([
+                            'expense_category_id' => $data['expense_category_id'],
+                            'people_in_charge' => $data['people_in_charge'],
+                            'total_expense' => $data['total_expense'],
+                            'notes' => $data['notes'],
+                            'user_id' => auth()->user()->id,
+                            'date' => Carbon::parse($data['date']),
+                        ]);
+                    }
+                )->form([
                     Select::make('expense_category_id')->label('Category')->searchable()->options(
                         ExpenseCategory::all()->pluck('name', 'id'),
                     )->required(),
                     TextInput::make('people_in_charge')->required(),
                     TextInput::make('total_expense')->numeric()->required(),
-                    Textarea::make('notes')
+                    Textarea::make('notes'),
+                    DatePicker::make('date')->required()
+                    // Textarea::make('notes'),
+
                 ])->modalWidth('xl')
             ])
             ->columns([
@@ -52,6 +68,8 @@ class ExpenseList extends Component implements HasForms, HasTable
                     }
                 ),
                 TextColumn::make('notes')->label('NOTES'),
+                TextColumn::make('date')->date()->label('DATE'),
+                TextColumn::make('user.name')->label('CREATED BY'),
 
             ])
             ->filters([
@@ -59,7 +77,13 @@ class ExpenseList extends Component implements HasForms, HasTable
             ])
             ->actions([
                EditAction::make('edit')->color('success')->form([
-                TextInput::make('name')->required(),
+                Select::make('expense_category_id')->label('Category')->searchable()->options(
+                    ExpenseCategory::all()->pluck('name', 'id'),
+                )->required(),
+                TextInput::make('people_in_charge')->required(),
+                TextInput::make('total_expense')->numeric()->required(),
+                Textarea::make('notes'),
+                DatePicker::make('date')->required()
                ]),
                DeleteAction::make('delete')
             ])

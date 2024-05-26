@@ -24,9 +24,9 @@ class BudgetingTracking extends Component
             'month' =>'required',
         ]);
         $this->datas = Income::whereYear('date', $this->year)->whereMonth('date', $this->month)->get();
-        $this->spents = Expense::whereYear('created_at', $this->year)->whereMonth('created_at', $this->month)->get();
+        $this->spents = Expense::whereYear('date', $this->year)->whereMonth('date', $this->month)->get();
         $this->expenses = ExpenseCategory::whereHas('expenses', function($record){
-            $record->whereYear('created_at', $this->year)->whereMonth('created_at', $this->month);
+            $record->whereYear('date', $this->year)->whereMonth('date', $this->month);
         })->get();
         $this->month_name = Carbon::createFromDate($this->year, $this->month, 1)->format('F');
     }

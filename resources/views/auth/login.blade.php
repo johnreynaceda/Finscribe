@@ -6,5 +6,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <livewire:login-user />
+    <div>
+        <livewire:login-user />
+    </div>
 </x-guest-layout>

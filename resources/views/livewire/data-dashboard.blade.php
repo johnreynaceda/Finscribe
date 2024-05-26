@@ -12,7 +12,7 @@
                 <x-button label="View Report" right-icon="document-text" />
 
             </div>
-            <div class="mt-5 h-96  flex-1">
+            <div class="mt-5 h-96  flex-1" wire:ignore>
                 <canvas id="myChart" class="w-full" height="400"></canvas>
             </div>
 
@@ -23,10 +23,33 @@
                         {{-- <span class="text-sm">Revenue and Expenses </span> --}}
                     </div>
                 </div>
-                <x-button label="View Report" right-icon="document-text" />
+                <div class="flex space-x-3">
+                    <x-native-select wire:model.live="month">
+                        <option>Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                    </x-native-select>
+                    <x-native-select wire:model.live="year">
+                        <option>Select Year</option>
+                        @foreach ($years as $item)
+                            <option>{{ $item }}</option>
+                        @endforeach
+
+                    </x-native-select>
+                </div>
 
             </div>
-            <div class="mt-5 h-96  flex-1">
+            <div class="mt-5 h-96  flex-1" wire:ignore>
                 <canvas id="myChart1" class="w-full" height="400"></canvas>
             </div>
         </div>
@@ -192,21 +215,20 @@
                 }
             });
 
-            const labelss = ['Income', 'Expenses', 'Revenue'];
-            const amounts = [@json($income), @json($expense),
-                @json($revenue)
-            ];
+            const labelss = ['Expenses', 'Revenue'];
+            const amounts = [@json($expense), @json($revenue)];
+            // console.log(@json($expense));
 
             // Create a new Chart.js instance
             var ctx1 = document.getElementById('myChart1').getContext('2d');
             var myChart1 = new Chart(ctx1, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: labelss,
                     datasets: [{
                         label: 'Amount',
                         data: amounts,
-                        backgroundColor: ['#040c74', '#880808',
+                        backgroundColor: ['#880808',
                             '#059040'
                         ],
 
@@ -222,63 +244,5 @@
             });
 
         });
-
-        // var ctx = document.getElementById('myChart').getContext('2d');
-        // var myChart = new Chart(ctx, {
-        //     type: 'bar',
-        //     data: {
-        //         labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'],
-        //         datasets: [{
-        //                 label: 'Last 7 Days',
-        //                 data: [10, 20, 30, 40, 50],
-        //                 backgroundColor: '#040c74',
-        //             },
-        //             {
-        //                 label: 'Last Week',
-        //                 data: [15, 25, 35, 45, 55],
-        //                 backgroundColor: '#e4ecec',
-
-        //             }
-        //         ]
-        //     },
-        //     options: {
-        //         scales: {
-        //             yAxes: [{
-        //                 ticks: {
-        //                     beginAtZero: true
-        //                 }
-        //             }]
-        //         }
-        //     }
-        // });
-
-        // var ctx1 = document.getElementById('myChart1').getContext('2d');
-        // var myChart1 = new Chart(ctx1, {
-        //     type: 'line',
-        //     data: {
-        //         labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4', 'Label 5'],
-        //         datasets: [{
-        //                 label: 'Last 7 Days',
-        //                 data: [10, 20, 30, 40, 50],
-        //                 backgroundColor: '#fd16ea',
-        //             },
-        //             {
-        //                 label: 'Last Week',
-        //                 data: [15, 25, 35, 45, 55],
-        //                 backgroundColor: '#e4ecec',
-
-        //             },
-        //         ]
-        //     },
-        //     options: {
-        //         scales: {
-        //             yAxes: [{
-        //                 ticks: {
-        //                     beginAtZero: true
-        //                 }
-        //             }]
-        //         }
-        //     }
-        // });
     </script>
 </div>
