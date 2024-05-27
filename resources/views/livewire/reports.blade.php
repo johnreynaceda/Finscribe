@@ -104,7 +104,7 @@
                         <div class="mt-10 border-t-2 flex justify-between bg-gray-200 p-2">
                             <h1 class="font-bold text-lg">NET INCOME</h1>
                             @php
-                                $net_income = $totalExpenses - $incomes->sum('total_sales');
+                                $net_income = $incomes->sum('total_sales') - $totalExpenses;
                             @endphp
                             @if ($net_income < 0)
                                 <h1 class="font-bold text-red-600 text-lg"> &#8369;{{ number_format($net_income, 2) }}</h1>
