@@ -100,29 +100,26 @@
                                 &#8369;{{ number_format($total_budget, 2) }}
                             </td>
                         </tr>
-                        @foreach ($collreection as $item)
-                            {{-- <tr>
+                        @foreach (\App\Models\Expense::whereYear('date', $this->year)->whereMonth('date', $this->month)->whereHas('expenseSubCategory', function ($ss) use ($record) {
+            $ss->where('expense_category_id', $record->id);
+        })->get() as $item)
+                            <tr>
 
-                            <td class=" w-64 border text-right  text-gray-700 font-bold  px-3 py-1">{{ $record->name }}
-                            </td>
+                                <td class=" w-64 border text-right  text-gray-700 font-bold  px-3 py-1">
+                                    {{ $item->expenseSubCategory->name }}
+                                </td>
 
-                            @if ($record->expenses->sum('total_expense') <= $total_budget)
                                 <td class="border text-right font-semibold  text-green-700  px-3 py-1">
-                                    &#8369;{{ number_format($record->expenses->sum('total_expense'), 2) }}</td>
-                            @else
-                                <td class="border text-right font-semibold  text-red-700  px-3 py-1">
-                                    &#8369;{{ number_format($record->expenses->sum('total_expense'), 2) }}</td>
-                            @endif
-                            <td class="border text-right  text-gray-700  px-3 py-1">
-                                &#8369;{{ number_format($total_budget, 2) }}
-                            </td>
+                                    &#8369;{{ number_format($item->sum('total_expense'), 2) }}</td>
+                                <td class="border text-right  text-gray-700  px-3 py-1">
+                                </td>
 
 
-                        </tr>
-                        @php
-                            // Add the total expenses of the current record to the total expenses variable
-                            $totalExpenses += $record->expenses->sum('total_expense');
-                        @endphp --}}
+                            </tr>
+                            @php
+                                // Add the total expenses of the current record to the total expenses variable
+                                $totalExpenses += $item->sum('total_expense');
+                            @endphp
                         @endforeach
                     @endforeach
                     <tr>
