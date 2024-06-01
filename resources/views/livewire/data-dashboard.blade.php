@@ -1,6 +1,6 @@
 <div>
     <div class="grid grid-cols-3 gap-10 ">
-        <div class="col-span-2">
+        <div class="col-span-2 p-5 bg-white rounded-xl">
             <div class="  flex justify-between items-center">
                 <div>
                     <div>
@@ -16,45 +16,12 @@
                 <canvas id="myChart" class="w-full" height="400"></canvas>
             </div>
 
-            <div class=" mt-10 flex justify-between items-center">
-                <div>
-                    <div>
-                        <h1 class="font-semibold text-2xl">EXPENSES & REVENUE</h1>
-                        {{-- <span class="text-sm">Revenue and Expenses </span> --}}
-                    </div>
-                </div>
-                <div class="flex space-x-3">
-                    <x-native-select wire:model.live="month">
-                        <option>Select Month</option>
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </x-native-select>
-                    <x-native-select wire:model.live="year">
-                        <option>Select Year</option>
-                        @foreach ($years as $item)
-                            <option>{{ $item }}</option>
-                        @endforeach
-
-                    </x-native-select>
-                </div>
-
-            </div>
-            <div class="mt-5 h-96  flex-1" wire:ignore>
-                <canvas id="myChart1" class="w-full" height="400"></canvas>
+            <div>
+                <livewire:dashboard-chart />
             </div>
         </div>
         <div>
-            <div class="shadow-md p-5 rounded-xl bg-gray-100 ">
+            <div class="shadow-md p-5 rounded-xl bg-white">
                 <h1 class="font-medium">Recently Used By</h1>
                 <div class="mt-5">
                     <ul role="list" class="divide-y divide-gray-100">
@@ -205,34 +172,6 @@
                             backgroundColor: '#e4ecec',
                         }
                     ]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-
-            const labelss = ['Expenses', 'Revenue'];
-            const amounts = [@json($expense), @json($revenue)];
-            // console.log(@json($expense));
-
-            // Create a new Chart.js instance
-            var ctx1 = document.getElementById('myChart1').getContext('2d');
-            var myChart1 = new Chart(ctx1, {
-                type: 'line',
-                data: {
-                    labels: labelss,
-                    datasets: [{
-                        label: 'Amount',
-                        data: amounts,
-                        backgroundColor: ['#880808',
-                            '#059040'
-                        ],
-
-                    }]
                 },
                 options: {
                     scales: {

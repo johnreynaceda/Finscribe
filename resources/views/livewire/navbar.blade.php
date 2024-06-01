@@ -1,8 +1,8 @@
 <div>
-    <div class="bg-main p-2 px-4 flex justify-between items-center">
+    <div class=" p-2 px-4 flex justify-between border-b  py-3 items-center bg-white">
         <div class="flex space-x-2 items-center">
-            <img src="{{ asset('images/logo.jpg') }}" class="h-12" alt="">
-            <span class="text-2xl text-white">FinScribe</span>
+            <img src="{{ asset('images/logo.jpg') }}" class="h-12 w-12 rounded-full" alt="">
+            <span class="text-2xl text-main">FinScribe</span>
         </div>
         <div class="">
             <div x-data="{
@@ -10,7 +10,7 @@
             }" class="hidden 2xl:block relative">
 
                 <button @click="dropdownOpen=true"
-                    class="inline-flex items-center justify-center h-12 py-2 pl-3 pr-12 text-sm font-medium transition-colors text-white hover:text-gray-700 border rounded-md  hover:bg-neutral-100 active:bg-white focus:text-gray-700 focus:bg-white focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
+                    class="inline-flex items-center justify-center h-12 py-2 pl-3 pr-12 text-sm font-medium transition-colors text-gray-700 border rounded-md  hover:bg-neutral-100 active:bg-white focus:text-gray-700 focus:bg-white focus:outline-none disabled:opacity-50 disabled:pointer-events-none">
                     <img src="{{ asset('images/sample.png') }}"
                         class="object-cover w-8 h-8 border rounded-full bg-white border-neutral-200" />
                     <span class="flex flex-col items-start flex-shrink-0 h-full ml-2 leading-none translate-y-px">

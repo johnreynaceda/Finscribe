@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('user_type');
             $table->string('otp')->default('0000');
+            $table->boolean('isLoggedIn')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

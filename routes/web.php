@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\CheckLoggedIn;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,26 +9,32 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    switch (auth()->user()->user_type) {
-        case 'Stakeholder':
-           return redirect()->route('stakeholder.dashboard');
-            break;
+    if (auth()->user()->isLoggedIn == true) {
+        switch (auth()->user()->user_type) {
+            case 'Stakeholder':
+               return redirect()->route('stakeholder.dashboard');
+                break;
 
-        case 'Superadmin':
-           return redirect()->route('superadmin.dashboard');
-            break;
-        case 'Admin':
-            return redirect()->route('admin.dashboard');
-            break;
+            case 'Superadmin':
+               return redirect()->route('superadmin.dashboard');
+                break;
+            case 'Admin':
+                return redirect()->route('admin.dashboard');
+                break;
 
-        default:
-        return redirect()->route('employee.dashboard');
-            break;
+            default:
+            return redirect()->route('employee.dashboard');
+                break;
+        }
+
+    }else{
+        Auth::logout();
+        return redirect('/');
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 //stakeholder
-Route::prefix('/stakeholder')->group(
+Route::prefix('/stakeholder')->middleware([CheckLoggedIn::class])->group(
     function(){
         Route::get('/dashboard', function(){
             return view('stakeholder.index');
@@ -41,6 +48,9 @@ Route::prefix('/stakeholder')->group(
         Route::get('/expenses', function(){
             return view('stakeholder.expense.index');
         })->name('stakeholder.expense');
+        Route::get('/expenses-sub-category', function(){
+            return view('stakeholder.expense.sub-category');
+        })->name('stakeholder.expense.sub-category');
         Route::get('/income', function(){
             return view('stakeholder.income.index');
         })->name('stakeholder.income');

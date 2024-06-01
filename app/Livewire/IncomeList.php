@@ -19,9 +19,11 @@ use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -29,6 +31,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Maatwebsite\Excel\Excel;
@@ -63,7 +66,7 @@ class IncomeList extends Component implements HasForms, HasTable
                     function($record){
                         return '₱'.number_format($record->total_sales,2);
                     }
-                )->alignRight(),
+                )->alignRight()->summarize(Sum::make()->label('TOTAL')),
                 TextColumn::make('total_discount')->label('TOTAL DISCOUNTS')->formatStateUsing(
                     function($record){
                         return $record->discount.'%';
@@ -128,7 +131,9 @@ class IncomeList extends Component implements HasForms, HasTable
 
             ])
             ->bulkActions([
-                // ...
+                BulkAction::make('delete')
+                ->requiresConfirmation()
+                ->action(fn (Collection $records) => $records->each->delete())
             ]);
     }
 

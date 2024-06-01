@@ -83,13 +83,26 @@
                 <tbody class="">
 
                     @foreach ($expenses as $record)
+                        @php
+                            $total_budget = \App\Models\BudgetCategory::where(
+                                'expense_category_id',
+                                $record->id,
+                            )->first()->amount;
+                        @endphp
                         <tr>
-                            @php
-                                $total_budget = \App\Models\BudgetCategory::where(
-                                    'expense_category_id',
-                                    $record->id,
-                                )->first()->amount;
-                            @endphp
+                            <td class="w-64 border text-right  text-gray-700 font-bold  px-3 py-1">
+                                {{ $record->name }}
+                            </td>
+                            <td class=" border text-right  text-gray-700 font-bold  px-3 py-1">
+
+                            </td>
+                            <td class=" border text-right  text-gray-700 font-bold  px-3 py-1">
+                                &#8369;{{ number_format($total_budget, 2) }}
+                            </td>
+                        </tr>
+                        @foreach ($collreection as $item)
+                            {{-- <tr>
+
                             <td class=" w-64 border text-right  text-gray-700 font-bold  px-3 py-1">{{ $record->name }}
                             </td>
 
@@ -109,7 +122,8 @@
                         @php
                             // Add the total expenses of the current record to the total expenses variable
                             $totalExpenses += $record->expenses->sum('total_expense');
-                        @endphp
+                        @endphp --}}
+                        @endforeach
                     @endforeach
                     <tr>
                         <td class="w-64 border text-right text-gray-700 font-bold px-3 py-1"></td>

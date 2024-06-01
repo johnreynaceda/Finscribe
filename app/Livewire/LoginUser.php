@@ -34,18 +34,6 @@ class LoginUser extends Component
     public function attemptLogin(){
         sleep(2);
         $this->validate();
-    //     $credentials = [
-    //         'email' => $this->email,
-    //         'password' => $this->password,
-    //     ];
-
-    //      $data = User::where('email', $this->email)->get();
-    //    if ($data->count() > 0) {
-    //     dd('account');
-    //    }else{
-    //     dd('no account');
-    //    }
-
     $credentials = [
         'email' => $this->email,
         'password' => $this->password,
@@ -85,6 +73,11 @@ public function verifyAccount(){
     $verify = User::where('id', $this->user_id)->where('otp', $otp)->first();
     if ($verify) {
         $user = User::where('id', $this->user_id)->first();
+
+        $user->update([
+            'isLoggedIn' => true,
+        ]);
+
         auth()->loginUsingId($user->id);
         $this->modal = false;
         sleep(5);

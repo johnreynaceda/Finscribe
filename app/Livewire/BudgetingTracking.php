@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
+use App\Models\ExpenseSubCategory;
 use App\Models\Income;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -25,8 +26,11 @@ class BudgetingTracking extends Component
         ]);
         $this->datas = Income::whereYear('date', $this->year)->whereMonth('date', $this->month)->get();
         $this->spents = Expense::whereYear('date', $this->year)->whereMonth('date', $this->month)->get();
-        $this->expenses = ExpenseCategory::whereHas('expenses', function($record){
-            $record->whereYear('date', $this->year)->whereMonth('date', $this->month);
+
+        $this->expenses = ExpenseCategory::whereHas('expenseSubCategories', function($record){
+           $record->whereHas('expenses', function($expense){
+            $expense->whereYear('date', $this->year)->whereMonth('date', $this->month);
+           });
         })->get();
         $this->month_name = Carbon::createFromDate($this->year, $this->month, 1)->format('F');
     }

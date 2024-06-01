@@ -25,10 +25,10 @@
 
 <body class="font-sans antialiased">
 
-    <div class="flex h-screen overflow-hidden bg-white">
+    <div class="flex h-screen overflow-hidden bg-gray-200">
         <div class="hidden md:flex md:flex-shrink-0">
             <div class="flex flex-col w-64">
-                <div class="flex flex-col flex-grow pt-5 overflow-y-auto bg-main border-r">
+                <div class="flex flex-col flex-grow pt-5 overflow-y-auto bg-main ">
                     <div class="flex flex-col flex-shrink-0 px-4">
                         {{-- <a class="text-lg font-semibold tracking-tighter text-white focus:outline-none focus:ring"
                             href="/">

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'password',
         'user_type',
         'otp',
+        'isLoggedIn',
 
     ];
 

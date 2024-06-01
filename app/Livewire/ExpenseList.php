@@ -6,6 +6,7 @@ use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
+use App\Models\ExpenseSubCategory;
 use App\Models\Shop\Product;
 use App\Models\User;
 use Carbon\Carbon;
@@ -22,8 +23,10 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
@@ -39,7 +42,7 @@ class ExpenseList extends Component implements HasForms, HasTable
                 CreateAction::make('new_expense')->action(
                     function($record, $data){
                         Expense::create([
-                            'expense_category_id' => $data['expense_category_id'],
+                            'expense_sub_category_id' => $data['expense_sub_category_id'],
                             'people_in_charge' => $data['people_in_charge'],
                             'total_expense' => $data['total_expense'],
                             'notes' => $data['notes'],
@@ -48,8 +51,10 @@ class ExpenseList extends Component implements HasForms, HasTable
                         ]);
                     }
                 )->form([
-                    Select::make('expense_category_id')->label('Category')->searchable()->options(
-                        ExpenseCategory::all()->pluck('name', 'id'),
+                    Select::make('expense_sub_category_id')->label('Expense Account')->searchable()->options(
+                        ExpenseSubCategory::all()->mapWithKeys(function($record){
+                            return [$record->id => $record->expenseCategory->name.' - '.$record->name];
+                        }),
                     )->required(),
                     TextInput::make('people_in_charge')->required(),
                     TextInput::make('total_expense')->numeric()->required(),
@@ -60,7 +65,7 @@ class ExpenseList extends Component implements HasForms, HasTable
                 ])->modalWidth('xl')
             ])
             ->columns([
-                TextColumn::make('expenseCategory.name')->label('CATEGORY NAME'),
+                TextColumn::make('expenseSubCategory.name')->label('CATEGORY NAME'),
                 TextColumn::make('people_in_charge')->label('PEOPLE IN CHARGE'),
                 TextColumn::make('total_expense')->label('TOTAL EXPENSES')->formatStateUsing(
                     function($record){
@@ -73,12 +78,29 @@ class ExpenseList extends Component implements HasForms, HasTable
 
             ])
             ->filters([
-                // ...
+                Filter::make('date')
+                ->form([
+                    DatePicker::make('date_from'),
+                    DatePicker::make('date_to'),
+                ])
+                ->query(function (Builder $query, array $data): Builder {
+                    return $query
+                        ->when(
+                            $data['date_from'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('date', '>=', $date),
+                        )
+                        ->when(
+                            $data['date_to'],
+                            fn (Builder $query, $date): Builder => $query->whereDate('date', '<=', $date),
+                        );
+                })
             ])
             ->actions([
                EditAction::make('edit')->color('success')->form([
-                Select::make('expense_category_id')->label('Category')->searchable()->options(
-                    ExpenseCategory::all()->pluck('name', 'id'),
+                Select::make('expense_sub_category_id')->label('Expense Account')->searchable()->options(
+                    ExpenseSubCategory::all()->mapWithKeys(function($record){
+                        return [$record->id => $record->expenseCategory->name.' - '.$record->name];
+                    }),
                 )->required(),
                 TextInput::make('people_in_charge')->required(),
                 TextInput::make('total_expense')->numeric()->required(),
