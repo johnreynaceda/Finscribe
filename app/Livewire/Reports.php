@@ -25,9 +25,9 @@ class Reports extends Component
 
     public function render()
     {
-        $this->expenses = ExpenseCategory::whereHas('expenses', function($record){
-            $record->whereYear('date', $this->year)->whereMonth('date', $this->month);
-        })->get();
+        // $this->expenses = ExpenseCategory::whereHas('expenses', function($record){
+        //     $record->whereYear('date', $this->year)->whereMonth('date', $this->month);
+        // })->get();
 
         $this->incomes = Income::whereYear('date', $this->year)->whereMonth('date', $this->month)->get();
 

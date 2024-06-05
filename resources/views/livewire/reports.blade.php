@@ -85,7 +85,7 @@
                             <h1 class="font-medium text-white">EXPENSES</h1>
 
                         </div>
-                        <div>
+                        {{-- <div>
                             @foreach ($expenses as $item)
                                 <li class="flex justify-between p-2">
                                     <h1 class="pl-20">{{ $item->name }}</h1>
@@ -111,7 +111,7 @@
                             @else
                                 <h1 class="font-bold text-green-600 text-lg"> &#8369;{{ number_format($net_income, 2) }}</h1>
                             @endif
-                        </div>
+                        </div> --}}
                         <div class="mt-5">
                             <x-button label="PRINT REPORT" @click="printOut($refs.printContainer.outerHTML);"
                                 class="font-semibold" icon="printer" dark />

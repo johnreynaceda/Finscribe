@@ -27,11 +27,17 @@ class BudgetingTracking extends Component
         $this->datas = Income::whereYear('date', $this->year)->whereMonth('date', $this->month)->get();
         $this->spents = Expense::whereYear('date', $this->year)->whereMonth('date', $this->month)->get();
 
-        $this->expenses = ExpenseCategory::whereHas('expenseSubCategories', function($record){
-           $record->whereHas('expenses', function($expense){
-            $expense->whereYear('date', $this->year)->whereMonth('date', $this->month);
-           });
-        })->get();
+        $expenseSubCategoryIds = Expense::whereYear('date', $this->year)
+    ->whereMonth('date', $this->month)
+    ->where('total_expense', '>', 0)
+    ->pluck('expense_sub_category_id')
+    ->unique();
+
+
+    $this->expenses = ExpenseCategory::whereHas('expenseSubCategories', function($query) use ($expenseSubCategoryIds) {
+        $query->whereIn('id', $expenseSubCategoryIds);
+    })->get();
+
         $this->month_name = Carbon::createFromDate($this->year, $this->month, 1)->format('F');
     }
 

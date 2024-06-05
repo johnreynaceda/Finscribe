@@ -53,7 +53,7 @@ class ExpenseList extends Component implements HasForms, HasTable
                 )->form([
                     Select::make('expense_sub_category_id')->label('Expense Account')->searchable()->options(
                         ExpenseSubCategory::all()->mapWithKeys(function($record){
-                            return [$record->id => $record->expenseCategory->name.' - '.$record->name];
+                            return [$record->id => $record->name];
                         }),
                     )->required(),
                     TextInput::make('people_in_charge')->required(),
