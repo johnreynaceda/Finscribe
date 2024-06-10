@@ -22,6 +22,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
+use Flasher\SweetAlert\Prime\SweetAlertInterface;
 
 class UserRequest extends Component implements HasForms, HasTable
 {
@@ -45,7 +46,9 @@ class UserRequest extends Component implements HasForms, HasTable
                             'firstname' => $data['firstname'],
                             'lastname' => $data['lastname'],
                         ]);
+                        sweetalert()->success('User created successfully');
                         $user->notify(new CreateAccount($user->name));
+
 
                     }
                 )->form([

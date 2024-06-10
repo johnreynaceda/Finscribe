@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\BudgetCategory;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\ExpenseSubCategory;
@@ -13,6 +14,8 @@ class BudgetingTracking extends Component
 {
     public $year, $month;
     public $month_name;
+
+    public $budgets;
 
     public $datas;
     public $spents;
@@ -26,6 +29,8 @@ class BudgetingTracking extends Component
         ]);
         $this->datas = Income::whereYear('date', $this->year)->whereMonth('date', $this->month)->get();
         $this->spents = Expense::whereYear('date', $this->year)->whereMonth('date', $this->month)->get();
+        $this->budgets = BudgetCategory::sum('amount');
+        // dd($this->budgets);
 
         $expenseSubCategoryIds = Expense::whereYear('date', $this->year)
     ->whereMonth('date', $this->month)

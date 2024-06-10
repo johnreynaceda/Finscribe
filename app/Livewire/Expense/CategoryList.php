@@ -21,6 +21,7 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
+use Flasher\SweetAlert\Prime\SweetAlertInterface;
 
 class CategoryList extends Component implements HasForms, HasTable
 {
@@ -32,7 +33,14 @@ class CategoryList extends Component implements HasForms, HasTable
     {
         return $table
             ->query(ExpenseCategory::query())->headerActions([
-                CreateAction::make('new_category')->form([
+                CreateAction::make('new_category')->action(
+                    function($data){
+                        ExpenseCategory::create([
+                            'name' => $data['name'],
+                        ]);
+                        sweetalert()->success('Added Successfully');
+                    }
+                )->form([
                     TextInput::make('name')->required(),
                 ])->modalWidth('xl')
             ])

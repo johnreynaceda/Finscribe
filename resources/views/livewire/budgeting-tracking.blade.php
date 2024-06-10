@@ -40,10 +40,12 @@
                             <span>&#8369;{{ number_format($income, 2) }}</span>
                             <span class="text-sm">Sales Revenue</span>
                         </li>
-                        <li class="flex flex-1 justify-between items-center">
-                            <span>&#8369;{{ number_format($expense, 2) }}</span>
-                            <span class="text-sm">Overspent in {{ $month_name ?? '' }}</span>
-                        </li>
+                        @if ($expense > $budgets)
+                            <li class="flex flex-1 justify-between items-center">
+                                <span>&#8369;{{ number_format($expense - $budgets, 2) }}</span>
+                                <span class="text-sm">Overspent in {{ $month_name ?? '' }}</span>
+                            </li>
+                        @endif
 
 
                     </ul>
@@ -84,7 +86,6 @@
                     </tr>
                 </thead>
                 <tbody class="">
-
                     @foreach ($expenses as $record)
                         <tr>
                             @php
@@ -137,57 +138,9 @@
 
                             </tr>
                             @php
-                                // Add the total expenses of the current record to the total expenses variable
                                 $totalExpenses += $item->expenses->sum('total_expense');
                             @endphp
                         @endforeach
-
-                        {{-- @php
-                            $total_budget = \App\Models\BudgetCategory::where(
-                                'expense_category_id',
-                                $record->id,
-                            )->first()->amount;
-                        @endphp
-
-                        {{-- @foreach (\App\Models\Expense::whereYear('date', $this->year)->whereMonth('date', $this->month)->whereHas('expenseSubCategory', function ($ss) use ($record) {
-            $ss->where('expense_category_id', $record->id);
-        })->get() as $item)
-                            <tr>
-                                @php
-                                    $total_budget = \App\Models\BudgetCategory::where(
-                                        'expense_category_id',
-                                        $record->id,
-                                    )->first()->amount;
-                                @endphp
-
-                                <td
-                                    class=" w-64 border-2 border-gray-700 text-right  text-gray-700 font-bold  px-3 py-1">
-                                    {{ $item->expenseSubCategory->name }}
-                                </td>
-
-                                @if ($item->sum('total_expense') <= $total_budget)
-                                    <td
-                                        class="border-2 border-gray-700 text-right font-semibold  text-green-700  px-3 py-1">
-                                        &#8369;{{ number_format($item->sum('total_expense') ?? 0, 2) }}</td>
-                                @else
-                                    <td
-                                        class="border-2 border-gray-700 text-right font-semibold  text-red-700  px-3 py-1">
-                                        &#8369;{{ number_format($item->sum('total_expense') ?? 0, 2) }}</td>
-                                @endif
-
-                                <td class="border-2 border-gray-700 text-right  text-gray-700  px-3 py-1">
-
-                                    &#8369;{{ number_format($total_budget ?? 0, 2) }}
-
-                                </td>
-
-
-                            </tr>
-                            @php
-                                // Add the total expenses of the current record to the total expenses variable
-                                $totalExpenses += $item->sum('total_expense');
-                            @endphp
-                        @endforeach --}}
                     @endforeach
                     <tr>
                         <td class="w-64 border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1"></td>

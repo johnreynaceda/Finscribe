@@ -29,6 +29,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
+use Flasher\SweetAlert\Prime\SweetAlertInterface;
 
 class ExpenseList extends Component implements HasForms, HasTable
 {
@@ -49,6 +50,7 @@ class ExpenseList extends Component implements HasForms, HasTable
                             'user_id' => auth()->user()->id,
                             'date' => Carbon::parse($data['date']),
                         ]);
+                        sweetalert()->success('Added Successfully');
                     }
                 )->form([
                     Select::make('expense_sub_category_id')->label('Expense Account')->searchable()->options(

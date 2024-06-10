@@ -8,6 +8,7 @@ use App\Mail\UserStatus;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Income;
+use App\Models\IncomeUpload;
 use App\Models\Shop\Product;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
@@ -35,6 +36,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Maatwebsite\Excel\Excel;
+use Flasher\SweetAlert\Prime\SweetAlertInterface;
 
 class IncomeList extends Component implements HasForms, HasTable
 {
@@ -52,7 +54,16 @@ class IncomeList extends Component implements HasForms, HasTable
                     function($data){
 
                         foreach ($this->upload as $key => $value) {
-                           \Maatwebsite\Excel\Facades\Excel::import(new IncomeImport,$value);
+                         if (IncomeUpload::where('filename', $value->getClientOriginalName())->count() > 0) {
+                            sweetalert()->error('The file has already been uploaded');
+                         }else{
+                            IncomeUpload::create([
+                                'filename' => $value->getClientOriginalName(),
+                            ]);
+                            \Maatwebsite\Excel\Facades\Excel::import(new IncomeImport,$value);
+                            sweetalert()->success('Uploaded Successfully');
+                         }
+
                         }
                     }
                 )->form([

@@ -23,6 +23,7 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
+use Flasher\SweetAlert\Prime\SweetAlertInterface;
 
 class SubCategoryList extends Component implements HasForms, HasTable
 {
@@ -34,7 +35,15 @@ class SubCategoryList extends Component implements HasForms, HasTable
     {
         return $table
             ->query(ExpenseSubCategory::query())->headerActions([
-                CreateAction::make('new_sub_category')->label('New Sub Category')->form([
+                CreateAction::make('new_sub_category')->label('New Sub Category')->action(
+                    function($record, $data){
+                        ExpenseSubCategory::create([
+                            'expense_category_id' => $data['expense_category_id'],
+                            'name' => $data['name'],
+                        ]);
+                        sweetalert()->success('Added Successfully');
+                    }
+                )->form([
                     Select::make('expense_category_id')->label('Expense Category')->options(ExpenseCategory::all()->pluck('name', 'id'))->required(),
                     TextInput::make('name')->required(),
                 ])->modalWidth('xl')
