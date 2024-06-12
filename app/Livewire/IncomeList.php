@@ -44,7 +44,7 @@ class IncomeList extends Component implements HasForms, HasTable
     use InteractsWithForms;
 
     public $upload = [];
-
+    public $file;
 
     public function table(Table $table): Table
     {
@@ -53,13 +53,18 @@ class IncomeList extends Component implements HasForms, HasTable
                 CreateAction::make('upload_income')->label('Upload Income')->icon('heroicon-o-document-text')->action(
                     function($data){
 
-                              if (IncomeUpload::where('filename', $this->upload[0]->getClientOriginalName())->count() > 0) {
+
+                        foreach ($this->upload as $key => $value) {
+                            $this->file = $value;
+                        }
+
+                              if (IncomeUpload::where('filename', $this->file->getClientOriginalName())->count() > 0) {
                             sweetalert()->error('The file has already been uploaded');
                          }else{
                             IncomeUpload::create([
-                                'filename' => $this->upload[0]->getClientOriginalName(),
+                                'filename' => $this->file->getClientOriginalName(),
                             ]);
-                            \Maatwebsite\Excel\Facades\Excel::import(new IncomeImport,$this->upload[0]);
+                            \Maatwebsite\Excel\Facades\Excel::import(new IncomeImport,$this->file);
                             sweetalert()->success('Uploaded Successfully');
                          }
                     }
