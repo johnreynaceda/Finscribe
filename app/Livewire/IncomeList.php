@@ -53,18 +53,15 @@ class IncomeList extends Component implements HasForms, HasTable
                 CreateAction::make('upload_income')->label('Upload Income')->icon('heroicon-o-document-text')->action(
                     function($data){
 
-                        foreach ($this->upload as $key => $value) {
-                         if (IncomeUpload::where('filename', $value->getClientOriginalName())->count() > 0) {
+                              if (IncomeUpload::where('filename', $this->upload[0]->getClientOriginalName())->count() > 0) {
                             sweetalert()->error('The file has already been uploaded');
                          }else{
                             IncomeUpload::create([
-                                'filename' => $value->getClientOriginalName(),
+                                'filename' => $this->upload[0]->getClientOriginalName(),
                             ]);
-                            \Maatwebsite\Excel\Facades\Excel::import(new IncomeImport,$value);
+                            \Maatwebsite\Excel\Facades\Excel::import(new IncomeImport,$this->upload[0]);
                             sweetalert()->success('Uploaded Successfully');
                          }
-
-                        }
                     }
                 )->form([
                     ViewField::make('upload')
