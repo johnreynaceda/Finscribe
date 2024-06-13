@@ -24,6 +24,7 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
+    <x-dialog z-index="z-50" blur="md" align="center" />
     <div class="fixed hidden  right-0 w-96 bottom-0 top-0 z-10  bg-[#1A2634] 2xl:grid place-content-center">
         <img src="{{ asset('images/logo.jpg') }}" alt="">
     </div>

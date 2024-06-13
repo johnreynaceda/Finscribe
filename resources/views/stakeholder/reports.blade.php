@@ -2,12 +2,10 @@
     <div>
         <header class="text-2xl font-bold text-gray-800">REPORTS</header>
         <div class="mt-10">
-            {{-- @if (auth()->user()->user_type != 'Employee')
+            @if (auth()->user()->user_type != 'Employee')
                 <livewire:reports />
             @else
-
-            @endif --}}
-            <h1>coming soon...</h1>
+            @endif
             <script>
                 function printOut(data) {
                     var mywindow = window.open('', '', 'height=1000,width=1000');

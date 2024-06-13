@@ -42,16 +42,16 @@
             </div>
         </div>
         <div>
-            <x-button label="PRINT REPORT" @click="printOut($refs.printContainer.outerHTML);" class="font-semibold"
-                icon="printer" dark />
+            {{-- <x-button label="PRINT REPORT" @click="printOut($refs.printContainer.outerHTML);" class="font-semibold"
+                icon="printer" dark /> --}}
         </div>
     </div>
     {{-- @dump($report_type) --}}
-    <div class="mt-10">
+    <div class="mt-10 ">
         @if ($report_type)
             @switch($report_type)
                 @case('Income')
-                    <div class="" x-ref="printContainer">
+                    <div class="border border-gray-500 p-5 rounded-xl bg-white" x-ref="printContainer">
                         <div class="flex justify-between">
                             <div class="flex space-x-2 items-center">
                                 <img src="{{ asset('images/business_logo.png') }}" class="h-20" alt="">
@@ -81,27 +81,37 @@
                                 <h1 class="font-bold text-lg"> &#8369;{{ number_format($incomes->sum('total_sales'), 2) }}</h1>
                             </div>
                         </div>
-                        <div class="mt-5 bg-blue-700 p-2 px-5 flex justify-between">
+                        <div class="mt-2 bg-blue-700 p-2 px-5 flex justify-between">
                             <h1 class="font-medium text-white">EXPENSES</h1>
 
                         </div>
-                        {{-- <div>
+                        <div>
+                            @php
+                                $totalExpenses = 0; // Initialize total expenses variable
+                            @endphp
                             @foreach ($expenses as $item)
-                                <li class="flex justify-between p-2">
-                                    <h1 class="pl-20">{{ $item->name }}</h1>
-                                    <h1>&#8369;{{ number_format($item->expenses->sum('total_expense'), 2) }}</h1>
+                                <li class="flex justify-between bg-blue-100 p-2">
+                                    <h1 class="pl-20 font-bold  text-xl">{{ $item->name }}</h1>
+                                    {{-- <h1>&#8369;{{ number_format($item->expenses->sum('total_expense'), 2) }}</h1> --}}
                                 </li>
-                                @php
-                                    // Add the total expenses of the current record to the total expenses variable
-                                    $totalExpenses += $item->expenses->sum('total_expense');
-                                @endphp
+                                @foreach (\App\Models\ExpenseSubCategory::where('expense_category_id', $item->id)->whereHas('expenses', function ($q) {
+                    $q->whereYear('date', $this->year)->whereMonth('date', $this->month)->where('total_expense', '>', 0);
+                })->get() as $record)
+                                    <li class="flex justify-between p-1">
+                                        <h1 class="pl-20 ">{{ $record->name }}</h1>
+                                        <h1>&#8369;{{ number_format($record->expenses->sum('total_expense'), 2) }}</h1>
+                                    </li>
+                                    @php
+                                        $totalExpenses += $record->expenses->sum('total_expense');
+                                    @endphp
+                                @endforeach
                             @endforeach
                             <div class="flex justify-between border-t-2 bg-gray-200 p-2">
                                 <h1 class="font-bold text-lg"> TOTAL EXPENSE</h1>
                                 <h1 class="font-bold text-lg">&#8369;{{ number_format($totalExpenses, 2) }}</h1>
                             </div>
                         </div>
-                        <div class="mt-10 border-t-2 flex justify-between bg-gray-200 p-2">
+                        <div class="mt-10 border-t-2 flex justify-between bg-gray-100 p-2">
                             <h1 class="font-bold text-lg">NET INCOME</h1>
                             @php
                                 $net_income = $incomes->sum('total_sales') - $totalExpenses;
@@ -111,7 +121,37 @@
                             @else
                                 <h1 class="font-bold text-green-600 text-lg"> &#8369;{{ number_format($net_income, 2) }}</h1>
                             @endif
-                        </div> --}}
+                        </div>
+                        <div class="mt-5 ">
+                            @php
+                                $before_taxes = $incomes->sum('total_sales') - $totalExpenses;
+                                $tax_expense = $before_taxes * 0.3;
+                            @endphp
+                            <li class="flex justify-between bg-blue-200 font-bold">
+                                <h1 class="pl-20">Net Income before Taxes</h1>
+                                <h1>&#8369;{{ number_format($before_taxes, 2) }}</h1>
+                            </li>
+                            <li class="flex justify-between bg-blue-200 font-bold">
+                                <h1 class="pl-20">Income Tax Expense</h1>
+                                <h1>&#8369;{{ number_format($tax_expense, 2) }}</h1>
+                            </li>
+                        </div>
+                        <div class="mt-5 border-t-2 flex justify-between bg-gray-200 p-2">
+                            <h1 class="font-bold text-lg">INCOME FROM CONTINUING OPERATIONS</h1>
+                            <h1 class="font-bold  text-lg"> &#8369;{{ number_format($before_taxes - $tax_expense, 2) }}</h1>
+
+                        </div>
+                        <div class="mt-5">
+                            <li class="flex justify-between bg-blue-200 ">
+                                <h1 class="pl-20 font-bold">Gross Profit </h1>
+                                <h1>TOTAL REVENUE - COST OF GOODS SOLD</h1>
+                            </li>
+                            <li class="flex justify-between bg-blue-200 font-bold">
+                                <h1 class="pl-20">Net Income</h1>
+                                <h1>&#8369;{{ number_format($before_taxes - $tax_expense, 2) }}</h1>
+                            </li>
+
+                        </div>
                         <div class="mt-5">
                             <x-button label="PRINT REPORT" @click="printOut($refs.printContainer.outerHTML);"
                                 class="font-semibold" icon="printer" dark />

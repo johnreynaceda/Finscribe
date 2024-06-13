@@ -14,8 +14,8 @@
         <div class="mt-6">
             <x-input-label for="password" :value="__('Password')" />
 
-            <x-text-input id="password" wire:model="password" class="block mt-1 w-full" type="password" name="password"
-                required autocomplete="current-password" />
+            <x-text-input id="password" wire:model="password" wire:keydown.enter="attemptLogin"
+                class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>

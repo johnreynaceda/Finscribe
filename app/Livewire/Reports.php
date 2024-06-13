@@ -25,9 +25,15 @@ class Reports extends Component
 
     public function render()
     {
-        // $this->expenses = ExpenseCategory::whereHas('expenses', function($record){
-        //     $record->whereYear('date', $this->year)->whereMonth('date', $this->month);
-        // })->get();
+        $expenseSubCategoryIds = Expense::whereYear('date', $this->year)
+    ->whereMonth('date', $this->month)
+    ->pluck('expense_sub_category_id')
+    ->unique();
+
+
+    $this->expenses = ExpenseCategory::whereHas('expenseSubCategories', function($query) use ($expenseSubCategoryIds) {
+        $query->whereIn('id', $expenseSubCategoryIds);
+    })->get();
 
         $this->incomes = Income::whereYear('date', $this->year)->whereMonth('date', $this->month)->get();
 
