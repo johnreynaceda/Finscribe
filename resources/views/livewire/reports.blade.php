@@ -144,7 +144,21 @@
                         <div class="mt-5">
                             <li class="flex justify-between bg-blue-200 ">
                                 <h1 class="pl-20 font-bold">Gross Profit </h1>
-                                <h1>TOTAL REVENUE - COST OF GOODS SOLD</h1>
+                                @php
+                                    $category = \App\Models\ExpenseCategory::where(
+                                        'name',
+                                        'like',
+                                        '%' . 'COST OF GOOD SOLDS' . '%',
+                                    )->first()->id;
+
+                                    $total_expense_sub = \App\Models\Expense::whereHas('expenseSubCategory', function (
+                                        $cat,
+                                    ) use ($category) {
+                                        $cat->where('expense_category_id', $category);
+                                    })->sum('total_expense');
+                                @endphp
+                                <h1 class="font-bold ">
+                                    &#8369;{{ number_format($incomes->sum('total_sales') - $total_expense_sub), 2 }}</h1>
                             </li>
                             <li class="flex justify-between bg-blue-200 font-bold">
                                 <h1 class="pl-20">Net Income</h1>
