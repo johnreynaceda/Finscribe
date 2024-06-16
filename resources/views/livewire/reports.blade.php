@@ -148,7 +148,7 @@
                                     $category = \App\Models\ExpenseCategory::where(
                                         'name',
                                         'like',
-                                        '%' . 'COST OF GOOD SOLDS' . '%',
+                                        '%' . 'COST OF GOODS SOLD' . '%',
                                     )->first()->id;
 
                                     $total_expense_sub = \App\Models\Expense::whereHas('expenseSubCategory', function (
