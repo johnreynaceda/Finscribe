@@ -14,6 +14,8 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -71,7 +73,27 @@ class UserRequest extends Component implements HasForms, HasTable
                 // ...
             ])
             ->actions([
-
+                EditAction::make('edit')->color('success')->action(
+                    function($record, $data){
+                        $record->update([
+                           'name' => $data['name'],
+                           'email' => $data['email'],
+                           'user_type' => $data['user_type'],
+                           'password' => bcrypt($data['password']),
+                        ]);
+                        sweetalert()->success('User updated successfully');
+                    }
+                )->form([
+                    TextInput::make('name')->required(),
+                    TextInput::make('email')->required(),
+                    Select::make('user_type')->options([
+                        'Superadmin' => 'Superadmin',
+                        'Admin' => 'Admin',
+                        'Employee' => 'Employee'
+                    ]),
+                    TextInput::make('password')->password()->required(),
+                ])->modalWidth('xl')->modalHeading('Edit User'),
+                DeleteAction::make('delete'),
             ])
             ->bulkActions([
                 // ...

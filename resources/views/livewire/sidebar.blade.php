@@ -213,7 +213,7 @@
 
 
 
-            @if (auth()->user()->user_type != 'Employee' && auth()->user()->user_type != 'Admin')
+            @if (auth()->user()->user_type != 'Employee')
                 <li>
                     <a class="{{ request()->routeIs('stakeholder.reports') ? 'bg-white text-main scale-95' : '' }} inline-flex items-center w-full px-4 py-2 mt-1  text-gray-200 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-main"
                         href="{{ route('stakeholder.reports') }}">
