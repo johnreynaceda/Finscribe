@@ -15,7 +15,7 @@
                     <span class="ml-4"> Dashboard </span>
                 </a>
             </li>
-            @if (auth()->user()->user_type != 'Employee')
+            @if (auth()->user()->user_type != 'Employee' && auth()->user()->user_type != 'Admin')
                 <li>
                     <a class="{{ request()->routeIs('stakeholder.user-request') ? 'bg-white text-main scale-95' : '' }} inline-flex items-center w-full px-4 py-2 mt-1  text-gray-200 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-main"
                         href="{{ route('stakeholder.user-request') }}">
