@@ -107,21 +107,21 @@
                             @php
                                 $totalExpenses += $item->expenses->sum('total_expense');
                             @endphp
-                            <tr>
-                                <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1">
-                                </td>
-                                <td class="border-2 border-gray-700 text-right font-semibold text-gray-700  px-3 py-1">
-                                    TOTAL:
-                                </td>
-                                <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1">
-
-                                </td>
-                                <td
-                                    class="border-2 {{ $totalExpenses <= $total_budget ? 'text-green-700' : 'text-red-700' }} border-gray-700 text-right font-semibold px-3 py-1">
-                                    &#8369;{{ number_format($total_budget - $totalExpenses, 2) }}
-                                </td>
-                            </tr>
                         @endforeach
+                        <tr>
+                            <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1">
+                            </td>
+                            <td class="border-2 border-gray-700 text-right font-semibold text-gray-700  px-3 py-1">
+                                TOTAL:
+                            </td>
+                            <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1">
+
+                            </td>
+                            <td
+                                class="border-2 {{ $totalExpenses <= $total_budget ? 'text-green-700' : 'text-red-700' }} border-gray-700 text-right font-semibold px-3 py-1">
+                                &#8369;{{ number_format($total_budget - $totalExpenses, 2) }}
+                            </td>
+                        </tr>
                     @endforeach
                     <tr>
                         <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1"></td>
