@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+    <link rel="shortcut icon" href="{{ asset('images/business_logo.png') }}" />
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -79,35 +79,38 @@
                             </div>
                             <dl class="grid grid-cols-2 gap-4 mt-12 list-none lg:gap-6 text-pretty">
                                 <div>
-                                    <div class="font-extrabold text-3xl text-gray-400">01</div>
+                                    <div class="font-extrabold text-3xl text-white opacity-50">Income Tracking</div>
 
-                                    <dd class="mt-2 text-md text-gray-200">
-                                        The license comes with no warranties. The licensor provides the
-                                        work "as is," and users must use it at their own risk.
+                                    <dd class="mt-2 text-md text-white opacity-50">
+                                        Process of monitoring and recording the flow of money into your business or
+                                        personal accounts to stay on top of your finances, identify trends, and make
+                                        informed decisions.
                                     </dd>
                                 </div>
                                 <div>
-                                    <div class="font-extrabold text-3xl text-gray-400">02</div>
+                                    <div class="font-extrabold text-3xl text-white opacity-50">Expense Tracking</div>
 
-                                    <dd class="mt-2 text-md text-gray-200">
-                                        You are allowed to use the licensed work for both non-commercial
-                                        and commercial purposes.
+                                    <dd class="mt-2 text-md text-white opacity-50">
+                                        The process of monitoring and recording the flow of money out of your business
+                                        or personal accounts to understand where your money is being spent and optimize
+                                        your financial resources.
                                     </dd>
                                 </div>
                                 <div>
-                                    <div class="font-extrabold text-3xl text-gray-400">03</div>
+                                    <div class="font-extrabold text-3xl text-white opacity-50">Report Generation</div>
 
-                                    <dd class="mt-2 text-md text-gray-200">
-                                        You must give appropriate credit to the original creator of the
-                                        work.
+                                    <dd class="mt-2 text-md text-white opacity-50">
+                                        Automatically creating detailed documents that summarize and analyze data,
+                                        providing insights and trends, and facilitating informed decision-making.
                                     </dd>
                                 </div>
                                 <div>
-                                    <div class="font-extrabold text-3xl text-gray-400">04</div>
+                                    <div class="font-extrabold text-3xl text-white opacity-50">Security</div>
 
-                                    <dd class="mt-2 text-md text-gray-200">
-                                        The CC BY 3.0 License does not include a "Share Alike" (SA)
-                                        provision.
+                                    <dd class="mt-2 text-md text-white opacity-50">
+                                        Robust security with access control, session management, account lockout,
+                                        security alerts and notifications, and audit trails to protect your data and
+                                        prevent unauthorized access.
                                     </dd>
                                 </div>
                             </dl>

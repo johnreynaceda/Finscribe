@@ -71,6 +71,8 @@
                             ACTUAL EXPENSE</th>
                         <th class="border-2 border-gray-700 text-right px-2 text-sm font-semibold text-gray-700 py-2">
                             ALLOTED BUDGET</th>
+                        <th class="border-2 border-gray-700 text-right px-2 text-sm font-semibold text-gray-700 py-2">
+                            BUDGET SURPLUS/DEFICIT</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,6 +88,8 @@
                                 {{ $record->name }}</td>
                             <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1">
                                 &#8369;{{ number_format($total_budget, 2) }}</td>
+                            <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1">
+                            </td>
                         </tr>
                         @foreach (\App\Models\ExpenseSubCategory::whereHas('expenses', function ($query) use ($record) {
         $query->whereYear('date', $this->year)->whereMonth('date', $this->month)->where('total_expense', '>', 0);
@@ -93,21 +97,43 @@
                             <tr>
                                 <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1">
                                     {{ $item->name }}</td>
-                                <td
-                                    class="border-2 border-gray-700 text-right font-semibold {{ $item->expenses->sum('total_expense') <= $total_budget ? 'text-green-700' : 'text-red-700' }} px-3 py-1">
+                                <td class="border-2 border-gray-700 text-right font-semibold  px-3 py-1">
                                     &#8369;{{ number_format($item->expenses->sum('total_expense'), 2) }}
                                 </td>
                                 <td class="border-2 border-gray-700 text-right text-gray-700 px-3 py-1"></td>
+                                <td class="border-2 border-gray-700 text-right text-gray-700 px-3 py-1"></td>
                             </tr>
+
                             @php
                                 $totalExpenses += $item->expenses->sum('total_expense');
                             @endphp
+                            <tr>
+                                <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1">
+                                </td>
+                                <td class="border-2 border-gray-700 text-right font-semibold text-gray-700  px-3 py-1">
+                                    TOTAL:
+                                </td>
+                                <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1">
+
+                                </td>
+                                <td
+                                    class="border-2 {{ $totalExpenses <= $total_budget ? 'text-green-700' : 'text-red-700' }} border-gray-700 text-right font-semibold px-3 py-1">
+                                    &#8369;{{ number_format($total_budget - $totalExpenses, 2) }}
+                                </td>
+                            </tr>
                         @endforeach
                     @endforeach
                     <tr>
                         <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1"></td>
                         <td class="border-2 border-gray-700 text-right font-bold text-red-700 px-3 py-1">Total:
                             &#8369;{{ number_format($totalExpenses, 2) }}</td>
+                        <td class="border-2 border-gray-700 text-right font-bold text-red-700 px-3 py-1"></td>
+                        <td class="border-2 border-gray-700 text-right font-bold text-red-700 px-3 py-1"></td>
+                    </tr>
+                    <tr>
+                        <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1"></td>
+                        <td class="border-2 border-gray-700 text-right font-bold text-red-700 px-3 py-1"></td>
+                        <td class="border-2 border-gray-700 text-right font-bold text-red-700 px-3 py-1"></td>
                         <td class="border-2 border-gray-700 text-right font-bold text-red-700 px-3 py-1"></td>
                     </tr>
                 </tbody>

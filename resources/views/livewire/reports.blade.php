@@ -8,9 +8,9 @@
             <div class="w-64">
                 <x-native-select label="Select Report" wire:model.live="report_type">
                     <option>Select an Option</option>
-                    <option>Income</option>
-                    <option>Budget</option>
-                    <option>Cash Flow</option>
+                    <option value="Income">Income Statement</option>
+                    <option value="Budget">Budget Stament</option>
+                    <option value="Cash Flow">Cash Flow Statement</option>
 
                 </x-native-select>
             </div>

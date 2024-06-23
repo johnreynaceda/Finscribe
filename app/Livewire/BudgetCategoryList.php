@@ -38,12 +38,12 @@ class BudgetCategoryList extends Component implements HasForms, HasTable
                     Select::make('expense_category_id')->label('Expense Category')->options(
                         ExpenseCategory::pluck('name', 'id'),
                     )->required()->unique(),
-                    TextInput::make('amount')->numeric()->required(),
+                    TextInput::make('amount')->label('Alloted Amount')->numeric()->required(),
                 ])->modalWidth('xl')
             ])
             ->columns([
                 TextColumn::make('expenseCategory.name')->label('EXPENSE NAME'),
-                TextColumn::make('amount')->label('AMOUNT')->formatStateUsing(
+                TextColumn::make('amount')->label('ALLOTED AMOUNT')->formatStateUsing(
                     function($record){
                         return '₱'.number_format($record->amount,2);
                     }
