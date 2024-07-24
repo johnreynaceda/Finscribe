@@ -2,3 +2,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hidden-header th {
+    font-size: 0; /* Hide the text content of the header cells */
+    line-height: 0; /* Remove line height to collapse space */
+    padding: 0; /* Remove padding to minimize space */
+    border: none; /* Remove borders to ensure no lines are visible */
+}
+.hidden-header th::before {
+    content: "\00a0"; /* Add a non-breaking space to keep header cells in place */
+    font-size: 16px; /* Adjust this value to the default font size */
+    line-height: normal; /* Restore line height */
+}
