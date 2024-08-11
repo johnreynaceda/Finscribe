@@ -825,15 +825,15 @@
                                         <tr>
                                             <td class="border text-right text-gray-700  px-3 ">
                                                 &#8369;
-                                                {{ number_format($current_begin_cashflow - $grandTotalExpenses_current, 2) }}
+                                                {{ number_format($current_end_cashflow - $grandTotalExpenses_current, 2) }} S
                                             </td>
                                             <td class="border text-right text-gray-700  px-3 ">
                                                 &#8369;
-                                                {{ number_format($previous_begin_cashflow - $grandTotalExpenses_previous, 2) }}
+                                                {{ number_format($previous_end_cashflow - $grandTotalExpenses_previous, 2) }}
                                             </td>
                                             <td class="border text-right text-gray-700  px-3 ">
                                                 &#8369;
-                                                {{ number_format($current_begin_cashflow - $grandTotalExpenses_current - ($previous_begin_cashflow - $grandTotalExpenses_previous), 2) }}
+                                                {{ number_format($current_end_cashflow - $grandTotalExpenses_current - ($previous_end_cashflow - $grandTotalExpenses_previous), 2) }}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -884,14 +884,14 @@
                                     <tbody>
                                         <tr>
                                             <td class="border text-right text-gray-700  px-3 py-[0.6rem]">
-                                                &#8369;{{ number_format($current_begin_cashflow + ($current_begin_cashflow - $grandTotalExpenses_current), 2) }}
+                                                &#8369;{{ number_format($current_begin_cashflow + ($current_end_cashflow - $grandTotalExpenses_current), 2) }}
                                             </td>
                                             <td class="border text-right text-gray-700  px-3 py-[0.6rem]">
-                                                &#8369;{{ number_format($previous_begin_cashflow + ($previous_begin_cashflow - $grandTotalExpenses_previous), 2) }}
+                                                &#8369;{{ number_format($previous_begin_cashflow + ($previous_end_cashflow - $grandTotalExpenses_previous), 2) }}
                                             </td>
                                             <td class="border text-right text-gray-700  px-3 py-[0.6rem]">
                                                 &#8369;
-                                                {{ number_format($current_begin_cashflow + ($current_begin_cashflow - $grandTotalExpenses_current) - ($previous_begin_cashflow + ($previous_begin_cashflow - $grandTotalExpenses_previous)), 2) }}
+                                                {{ number_format($current_begin_cashflow + ($current_end_cashflow - $grandTotalExpenses_current) - ($previous_begin_cashflow + ($previous_end_cashflow - $grandTotalExpenses_previous)), 2) }}
                                             </td>
                                         </tr>
                                     </tbody>
