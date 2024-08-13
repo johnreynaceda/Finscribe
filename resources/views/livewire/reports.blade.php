@@ -577,7 +577,7 @@
                                     <tr>
                                         <th
                                             class=" w-[26rem] border-y border-l  text-start px-2 uppercase text-sm font-semibold text-gray-700 py-1">
-                                            ( + ) CASH RECEIPTS
+                                            ( + ) CASH RECEIPTSS
                                         </th>
                                         <th
                                             class=" w-[19rem] border-t  text-center px-2 text-sm uppercase font-semibold text-transparent py-1">
@@ -661,7 +661,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (\App\Models\ExpenseSubCategory::where('expense_category_id', $item->id)->get() as $record)
+                                        @foreach (\App\Models\ExpenseSubCategory::where('expense_category_id', $item->id)->whereHas('expenses', function ($record) {
+                    return $record->where('total_expense', '>', 0);
+                })->get() as $record)
                                             @php
                                                 $subCategoryExpenses_current = \App\Models\Expense::where(
                                                     'expense_sub_category_id',
@@ -825,15 +827,15 @@
                                         <tr>
                                             <td class="border text-right text-gray-700  px-3 ">
                                                 &#8369;
-                                                {{ number_format($current_end_cashflow - $grandTotalExpenses_current, 2) }} S
+                                                {{ number_format($current_sales - $grandTotalExpenses_current, 2) }} S
                                             </td>
                                             <td class="border text-right text-gray-700  px-3 ">
                                                 &#8369;
-                                                {{ number_format($previous_end_cashflow - $grandTotalExpenses_previous, 2) }}
+                                                {{ number_format($previous_sales - $grandTotalExpenses_previous, 2) }}
                                             </td>
                                             <td class="border text-right text-gray-700  px-3 ">
                                                 &#8369;
-                                                {{ number_format($current_end_cashflow - $grandTotalExpenses_current - ($previous_end_cashflow - $grandTotalExpenses_previous), 2) }}
+                                                {{ number_format($current_sales - $grandTotalExpenses_current - ($previous_sales - $grandTotalExpenses_previous), 2) }}
                                             </td>
                                         </tr>
                                     </tbody>
