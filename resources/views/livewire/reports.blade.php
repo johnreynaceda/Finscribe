@@ -662,7 +662,7 @@
                                     </thead>
                                     <tbody>
                                         @foreach (\App\Models\ExpenseSubCategory::where('expense_category_id', $item->id)->whereHas('expenses', function ($record) {
-                    return $record->where('total_expense', '>', 0);
+                    return $record->whereYear('date', $this->year)->whereMonth('date', $this->month)->where('total_expense', '>', 0);
                 })->get() as $record)
                                             @php
                                                 $subCategoryExpenses_current = \App\Models\Expense::where(
