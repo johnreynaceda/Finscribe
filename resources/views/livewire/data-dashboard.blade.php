@@ -1,26 +1,28 @@
 <div>
-    <div class="grid grid-cols-3 gap-10 ">
-        <div class="col-span-2 p-5 bg-white rounded-xl">
-            <div class="  flex justify-between items-center">
-                <div>
+    <div class="grid grid-cols-2 gap-10 ">
+        <div>
+            <div class=" p-5 bg-white rounded-xl">
+                <div class="  flex justify-between items-center">
                     <div>
-                        <h1 class="font-semibold text-2xl">WEEKLY EXPENSES</h1>
-                        <span class="text-sm">Expense from {{ now()->subDays(7)->format('F d, Y') }} -
-                            {{ now()->format('F d, Y') }}</span>
+                        <div>
+                            <h1 class="font-semibold text-2xl">WEEKLY EXPENSES</h1>
+                            <span class="text-sm">Expense from {{ now()->subDays(7)->format('F d, Y') }} -
+                                {{ now()->format('F d, Y') }}</span>
+                        </div>
                     </div>
+                    <x-button label="View Report" right-icon="document-text" />
+
                 </div>
-                <x-button label="View Report" right-icon="document-text" />
+                <div class="mt-5 h-96  flex-1" wire:ignore>
+                    <canvas id="myChart" class="w-full" height="400"></canvas>
+                </div>
 
-            </div>
-            <div class="mt-5 h-96  flex-1" wire:ignore>
-                <canvas id="myChart" class="w-full" height="400"></canvas>
-            </div>
-
-            <div>
-                <livewire:dashboard-chart />
+                <div>
+                    <livewire:dashboard-chart />
+                </div>
             </div>
         </div>
-        <div>
+        <div class="space-y-5">
             <div class="shadow-md p-5 rounded-xl bg-white">
                 <h1 class="font-medium">Recently Used By</h1>
                 <div class="mt-5">
@@ -93,60 +95,12 @@
                                         datetime="2023-01-23T13:23Z">3h ago</time></p>
                             </div>
                         </li>
-                        <li class="flex justify-between gap-x-6 py-5">
-                            <div class="flex min-w-0 gap-x-4">
-                                <img class="h-12 w-12 flex-none rounded-full bg-gray-50"
-                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt="">
-                                <div class="min-w-0 flex-auto">
-                                    <p class="text-sm font-semibold leading-6 text-gray-900">Leslie Alexander</p>
-                                    <p class="mt-1 truncate text-xs leading-5 text-gray-500">
-                                        leslie.alexander@example.com</p>
-                                </div>
-                            </div>
-                            <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                                <p class="text-sm leading-6 text-gray-900">{{ now()->format('d M Y') }}</p>
-                                <p class="mt-1 text-xs leading-5 text-gray-500">Last seen <time
-                                        datetime="2023-01-23T13:23Z">3h ago</time></p>
-                            </div>
-                        </li>
-                        <li class="flex justify-between gap-x-6 py-5">
-                            <div class="flex min-w-0 gap-x-4">
-                                <img class="h-12 w-12 flex-none rounded-full bg-gray-50"
-                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt="">
-                                <div class="min-w-0 flex-auto">
-                                    <p class="text-sm font-semibold leading-6 text-gray-900">Leslie Alexander</p>
-                                    <p class="mt-1 truncate text-xs leading-5 text-gray-500">
-                                        leslie.alexander@example.com</p>
-                                </div>
-                            </div>
-                            <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                                <p class="text-sm leading-6 text-gray-900">{{ now()->format('d M Y') }}</p>
-                                <p class="mt-1 text-xs leading-5 text-gray-500">Last seen <time
-                                        datetime="2023-01-23T13:23Z">3h ago</time></p>
-                            </div>
-                        </li>
-                        <li class="flex justify-between gap-x-6 py-5">
-                            <div class="flex min-w-0 gap-x-4">
-                                <img class="h-12 w-12 flex-none rounded-full bg-gray-50"
-                                    src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                    alt="">
-                                <div class="min-w-0 flex-auto">
-                                    <p class="text-sm font-semibold leading-6 text-gray-900">Leslie Alexander</p>
-                                    <p class="mt-1 truncate text-xs leading-5 text-gray-500">
-                                        leslie.alexander@example.com</p>
-                                </div>
-                            </div>
-                            <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                                <p class="text-sm leading-6 text-gray-900">{{ now()->format('d M Y') }}</p>
-                                <p class="mt-1 text-xs leading-5 text-gray-500">Last seen <time
-                                        datetime="2023-01-23T13:23Z">3h ago</time></p>
-                            </div>
-                        </li>
+
                     </ul>
                 </div>
             </div>
+            <livewire:descriptive-analytic />
+
         </div>
     </div>
     <script>

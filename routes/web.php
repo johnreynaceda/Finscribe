@@ -69,6 +69,9 @@ Route::prefix('/stakeholder')->middleware([CheckLoggedIn::class])->group(
         Route::get('/budgeting-category', function(){
             return view('stakeholder.budgeting-category');
         })->name('stakeholder.budgeting-category');
+        Route::get('/live-tracking', function(){
+            return view('stakeholder.live-tracking');
+        })->name('stakeholder.live-tracking');
     }
 );
 
