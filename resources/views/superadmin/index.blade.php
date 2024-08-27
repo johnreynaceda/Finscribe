@@ -1,5 +1,5 @@
 <x-master-layout>
-    <div>
+    {{-- <div>
         <div class="grid grid-cols-3 gap-10 ">
             <div class="col-span-2">
                 <div class="  flex justify-between items-center">
@@ -223,6 +223,9 @@
                 }
             }
         });
-    </script>
-
+    </script> --}}
+    <div>
+        <livewire:admin-descriptive />
+        <livewire:data-dashboard />
+    </div>
 </x-master-layout>

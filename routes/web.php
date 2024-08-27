@@ -76,7 +76,7 @@ Route::prefix('/stakeholder')->middleware([CheckLoggedIn::class])->group(
 );
 
 //employee
-Route::prefix('/employee')->group(
+Route::prefix('/employee')->middleware([CheckLoggedIn::class])->group(
     function(){
 
         Route::get('/dashboard', function(){
@@ -87,7 +87,7 @@ Route::prefix('/employee')->group(
 
 
 //Superadmin
-Route::prefix('/superadmin')->group(
+Route::prefix('/superadmin')->middleware([CheckLoggedIn::class])->group(
     function(){
         Route::get('/dashboard', function(){
             return view('superadmin.index');
@@ -96,7 +96,7 @@ Route::prefix('/superadmin')->group(
 );
 
 //admin
-Route::prefix('/admin')->group(
+Route::prefix('/admin')->middleware([CheckLoggedIn::class])->group(
     function(){
         Route::get('/dashboard', function(){
             return view('admin.index');
