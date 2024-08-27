@@ -29,7 +29,7 @@ Route::get('/dashboard', function () {
 
     }else{
         Auth::logout();
-        return redirect('/');
+        return redirect()->route('login');
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 

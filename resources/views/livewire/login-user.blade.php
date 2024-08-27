@@ -116,4 +116,69 @@
             </div>
         </div>
     </div>
+
+    <x-modal wire:model.defer="option_modal" align="center">
+        <x-card title="">
+            <div>
+                <h1 class="font-bold text-lg">Select OTP Delivery Method</h1>
+                <ul role="list" class="divide-y divide-gray-100 space-y-2 px-10 mt-5">
+                    <li class="flex  gap-x-6 py-5 border px-5 rounded-xl bg-gray-100 cursor-pointer hover:scale-95"
+                        wire:click="optionMethod('email')">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                class="text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-brand-gmail">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M16 20h3a1 1 0 0 0 1 -1v-14a1 1 0 0 0 -1 -1h-3v16z" />
+                                <path d="M5 20h3v-16h-3a1 1 0 0 0 -1 1v14a1 1 0 0 0 1 1z" />
+                                <path d="M16 4l-4 4l-4 -4" />
+                                <path d="M4 6.5l8 7.5l8 -7.5" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h1 class="font-bold">EMAIL</h1>
+                            <p>OTP will be sent to user email address</p>
+                        </div>
+                    </li>
+                    <li
+                        class="flex  gap-x-6 py-5 border relative px-5 rounded-xl bg-gray-100 overflow-hidden cursor-pointer hover:scale-95">
+                        <div
+                            class="absolute top-0 bg-gray-300 left-0 text-red-600 text-lg w-full grid place-content-center h-full bg-opacity-70">
+                            <p class="animate-pulse">
+                                Coming soon...
+                                </pa>
+                        </div>
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                                class="text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="icon icon-tabler icons-tabler-outline icon-tabler-message-2-share">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <path d="M8 9h8" />
+                                <path d="M8 13h6" />
+                                <path d="M12 21l-3 -3h-3a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6" />
+                                <path d="M16 22l5 -5" />
+                                <path d="M21 21.5v-4.5h-4.5" />
+                            </svg>
+
+                        </div>
+                        <div>
+                            <h1 class="font-bold">SMS</h1>
+                            <p>OTP will be sent to users phone via SMS</p>
+                        </div>
+                    </li>
+
+
+                </ul>
+
+                <div class="mt-5 text-center">
+                    <h1 class="text-red-600 animate-pulse" wire:target="optionMethod" wire:loading="optionMethod">
+                        Please wait while sending yout otp...</h1>
+
+                </div>
+            </div>
+        </x-card>
+    </x-modal>
+
 </div>

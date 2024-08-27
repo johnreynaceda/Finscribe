@@ -100,6 +100,7 @@
                 </div>
             </div>
             <livewire:descriptive-analytic />
+            <livewire:data-expense />
 
         </div>
     </div>

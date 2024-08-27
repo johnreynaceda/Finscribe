@@ -16,6 +16,8 @@ class LoginUser extends Component
     public $one, $two, $three, $four, $date;
     public $modal = false;
     public $user_id;
+    public $option_modal = false;
+    public $option;
     use Actions;
 
 
@@ -32,24 +34,18 @@ class LoginUser extends Component
     ];
 
     public function attemptLogin(){
-        sleep(2);
+        sleep(1);
+
         $this->validate();
-    $credentials = [
+        $credentials = [
         'email' => $this->email,
         'password' => $this->password,
     ];
 
     if (Auth::attempt($credentials)) {
-        $data = User::where('email', $this->email)->first();
-        $this->user_id = $data->id;
-        $random = rand(1000, 9999);
-        $data->update([
-            'otp' => $random,
-        ]);
 
-        $data->notify(new Otp($data->name, $data->otp));
-        // Session::flush();
-        $this->modal = true;
+        $this->option_modal = true;
+
 
     } else {
 
@@ -59,6 +55,28 @@ class LoginUser extends Component
     }
 
 
+
+}
+
+public function optionMethod($option){
+    $this->option = $option;
+
+    if ($this->option == 'email') {
+       $data = User::where('email', $this->email)->first();
+        $this->user_id = $data->id;
+        $random = rand(1000, 9999);
+        $data->update([
+            'otp' => $random,
+        ]);
+
+        $data->notify(new Otp($data->name, $data->otp));
+        $this->option_modal = false;
+
+        $this->modal = true;
+
+    }else{
+        dd('no sms found');
+    }
 
 }
 
