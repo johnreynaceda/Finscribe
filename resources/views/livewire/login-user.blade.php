@@ -174,7 +174,7 @@
 
                 <div class="mt-5 text-center">
                     <h1 class="text-red-600 animate-pulse" wire:target="optionMethod" wire:loading="optionMethod">
-                        Please wait while sending yout otp...</h1>
+                        Please wait while sending your otp...</h1>
 
                 </div>
             </div>
