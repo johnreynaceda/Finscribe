@@ -261,6 +261,26 @@
                                                 )->first()->amount ?? 0;
                                             $totalCategoryExpenses = 0;
                                             $grandTotalAllottedBudget += $total_budget;
+
+                                            $expenseSubCategories = \App\Models\ExpenseSubCategory::whereHas(
+                                                'expenses',
+                                                function ($query) {
+                                                    $query
+                                                        ->whereYear('date', $this->year)
+                                                        ->whereMonth('date', $this->month)
+                                                        ->where('total_expense', '>', 0);
+                                                },
+                                            )
+                                                ->where('expense_category_id', $expense->id)
+                                                ->with([
+                                                    'expenses' => function ($query) {
+                                                        // Eager load expenses filtered by month and year
+                                                        $query
+                                                            ->whereYear('date', $this->year)
+                                                            ->whereMonth('date', $this->month);
+                                                    },
+                                                ])
+                                                ->get();
                                         @endphp
                                         <tr>
                                             <td colspan="2"
@@ -272,11 +292,12 @@
                                             </td>
                                         </tr>
 
-                                        @foreach (\App\Models\ExpenseSubCategory::whereHas('expenses', function ($query) use ($expense) {
-                $query->whereYear('date', $this->year)->whereMonth('date', $this->month)->where('total_expense', '>', 0);
-            })->where('expense_category_id', $expense->id)->get() as $item)
+                                        @foreach ($expenseSubCategories as $item)
                                             @php
+                                                // Calculate subcategory expenses directly using Eloquent relationship
                                                 $subCategoryExpenses = $item->expenses->sum('total_expense');
+
+                                                // Add to the category and grand totals
                                                 $totalCategoryExpenses += $subCategoryExpenses;
                                                 $grandTotalExpenses += $subCategoryExpenses;
                                             @endphp
@@ -288,9 +309,8 @@
                                                     &#8369;{{ number_format($subCategoryExpenses, 2) }}
                                                 </td>
                                                 <td class="border text-right text-gray-700 px-3 py-1">
-
+                                                    <!-- Additional cells if needed -->
                                                 </td>
-
                                             </tr>
                                         @endforeach
                                         <tr>

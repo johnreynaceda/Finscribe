@@ -9,66 +9,38 @@ use Livewire\Component;
 
 class DescriptiveAnalytic extends Component
 {
-    public $month;
+
+    public $labels = [];
+    public $revenue = [];
+    public $budget = [];
+
     public $year;
-    public $income = 0;
-    public $expense = 0;
-    public $incomeTransactions = 0;
-    public $budget = 0;
+
+    public function mount(){
 
 
-    public $chartValues = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $this->labels[] = date('F', mktime(0, 0, 0, $i, 10)); // Generates the full month name
 
+            $income = Income::whereMonth('date', $i)->whereYear('date', now()->year - 1)->sum('total_sales');
+            $expense = Expense::whereMonth('date', $i)->whereYear('date', now()->year - 1)->sum('total_expense');
 
-
-    #[On('updateChart')]
-    public function handleupdateChart(){
-       $this->generateDateList();
-        if ($this->month && $this->year) {
-           $this->loadData();
+            $this->revenue[] = $income - $expense;
+            $this->budget[] = (75 / 100) * ($income - $expense);
         }
-    }
 
-
-    public function mount()
-    {
-        $this->loadData();
-    }
-
-    public function generateDateList()
-    {
-        if ($this->month && $this->year) {
-            $this->dispatch('updateChart');
-        }
-    }
-
-    public function loadData()
-    {
-        $this->chartValues = [0,0,0,0];
-        $this->income = Income::whereYear('date', $this->year)->whereMonth('date', ($this->month-1))->sum('total_sales');
-
-    // Calculate total expenses for the week
-    $this->expense = Expense::when(
-        $this->month, function($record){
-           $record->whereYear('date', $this->year)->whereMonth('date', ($this->month-1));
-        }
-    )->sum('total_expense');
-
-    $this->incomeTransactions = Income::whereYear('date', $this->year)->whereMonth('date', ($this->month - 1))->count();
-
-        $this->budget = (75 / 100) * ($this->income - $this->expense);
-
-    $this->chartValues = [$this->income - $this->expense, $this->budget];
+        // dd($this->revenue);
 
     }
+
+    public function calculateBudget($income, $expense)
+{
+    // Example calculation: return 80% of income as budget
+    return $income * 0.8;
+}
 
     public function render()
     {
-
-        $this->generateDateList();
-        if ($this->month && $this->year) {
-           $this->loadData();
-        }
         return view('livewire.descriptive-analytic',[
             'years' => Income::all()->pluck('date')->map(function ($date) {
                 return date('Y', strtotime($date)); // Extract the year from each date

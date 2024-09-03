@@ -36,11 +36,11 @@ class DataDashboard extends Component
             $currentDay = $startOfThisWeek->copy()->addDays($i);
             $labels[] = $currentDay->format('D'); // Format the day as 'Mon', 'Tue', etc.
 
-            $expenseThisWeek = Expense::whereDate('created_at', $currentDay)
+            $expenseThisWeek = Expense::whereDate('date', $currentDay)
                 ->sum('total_expense');
             $dataThisWeek[] = $expenseThisWeek;
 
-            $expenseLastWeek = Expense::whereDate('created_at', $startOfLastWeek->copy()->addDays($i))
+            $expenseLastWeek = Expense::whereDate('date', $startOfLastWeek->copy()->addDays($i))
                 ->sum('total_expense');
             $dataLastWeek[] = $expenseLastWeek;
         }

@@ -55,7 +55,10 @@ class BudgetCategoryList extends Component implements HasForms, HasTable
             ])
             ->actions([
                EditAction::make('edit')->color('success')->form([
-                TextInput::make('name')->required(),
+                Select::make('expense_category_id')->label('Expense Category')->options(
+                    ExpenseCategory::pluck('name', 'id'),
+                )->required(),
+                TextInput::make('amount')->label('Alloted Amount')->numeric()->required(),
                ]),
                DeleteAction::make('delete')
             ])
