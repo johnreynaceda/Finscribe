@@ -61,6 +61,7 @@
         @php
             $grandTotalExpenses = 0;
             $grandTotalAllottedBudget = 0;
+
         @endphp
         @if ($spents)
             <table id="example" class="table-auto mt-5 w-full">
@@ -84,6 +85,23 @@
                                     ->amount ?? 0;
                             $totalCategoryExpenses = 0;
                             $grandTotalAllottedBudget += $total_budget;
+
+                            $expenseSubCategories = \App\Models\ExpenseSubCategory::whereHas('expenses', function (
+                                $query,
+                            ) {
+                                $query
+                                    ->whereYear('date', $this->year)
+                                    ->whereMonth('date', $this->month)
+                                    ->where('total_expense', '>', 0);
+                            })
+                                ->where('expense_category_id', $record->id)
+                                ->with([
+                                    'expenses' => function ($query) {
+                                        // Eager load expenses filtered by month and year
+                                        $query->whereYear('date', $this->year)->whereMonth('date', $this->month);
+                                    },
+                                ])
+                                ->get();
                         @endphp
                         <tr>
                             <td colspan="2"
@@ -93,19 +111,20 @@
                                 &#8369;{{ number_format($total_budget, 2) }}</td>
                             <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1"></td>
                         </tr>
-                        @foreach (\App\Models\ExpenseSubCategory::whereHas('expenses', function ($query) use ($record) {
-        $query->whereYear('date', $this->year)->whereMonth('date', $this->month)->where('total_expense', '>', 0);
-    })->where('expense_category_id', $record->id)->get() as $item)
+                        @foreach ($expenseSubCategories as $item)
                             @php
+                                // Calculate total expenses for each subcategory
                                 $subCategoryExpenses = $item->expenses->sum('total_expense');
                                 $totalCategoryExpenses += $subCategoryExpenses;
                                 $grandTotalExpenses += $subCategoryExpenses;
                             @endphp
                             <tr>
                                 <td class="border-2 border-gray-700 text-right text-gray-700 font-bold px-3 py-1">
-                                    {{ $item->name }}</td>
+                                    {{ $item->name }}
+                                </td>
                                 <td class="border-2 border-gray-700 text-right font-semibold px-3 py-1">
-                                    &#8369;{{ number_format($subCategoryExpenses, 2) }}</td>
+                                    &#8369;{{ number_format($subCategoryExpenses, 2) }}
+                                </td>
                                 <td class="border-2 border-gray-700 text-right text-gray-700 px-3 py-1"></td>
                                 <td class="border-2 border-gray-700 text-right text-gray-700 px-3 py-1"></td>
                             </tr>

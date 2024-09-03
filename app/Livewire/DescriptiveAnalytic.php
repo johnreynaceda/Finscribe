@@ -22,8 +22,8 @@ class DescriptiveAnalytic extends Component
         for ($i = 1; $i <= 12; $i++) {
             $this->labels[] = date('F', mktime(0, 0, 0, $i, 10)); // Generates the full month name
 
-            $income = Income::whereMonth('date', $i)->whereYear('date', now()->year - 1)->sum('total_sales');
-            $expense = Expense::whereMonth('date', $i)->whereYear('date', now()->year - 1)->sum('total_expense');
+            $income = Income::whereMonth('date', $i - 1)->whereYear('date', now()->year - 1)->sum('total_sales');
+            $expense = Expense::whereMonth('date', $i - 1)->whereYear('date', now()->year - 1)->sum('total_expense');
 
             $this->revenue[] = $income - $expense;
             $this->budget[] = (75 / 100) * ($income - $expense);
