@@ -231,7 +231,7 @@
         <p class="px-4 pt-4 text-xs font-semibold text-gray-400 uppercase">
             FINANCIAL MANAGEMENT SYSTEM (FMS)
         </p>
-        <ul>
+        <ul class="mt-5">
             <li>
                 <a class="{{ request()->routeIs('stakeholder.live-tracking') ? 'bg-white text-main scale-95' : '' }}  inline-flex items-center w-full px-4 py-2 mt-1  text-gray-200 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-main"
                     href="{{ route('stakeholder.live-tracking') }}">
@@ -244,7 +244,7 @@
                     <span class="ml-4"> Live Tracking </span>
                 </a>
             </li>
-            <li>
+            {{-- <li>
                 <a class="inline-flex items-center w-full px-4 py-2 mt-1  text-gray-200 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-main"
                     href="{{ route('stakeholder.dashboard') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15"
@@ -267,8 +267,8 @@
                     </svg>
                     <span class="ml-4"> File Transfers </span>
                 </a>
-            </li>
-            <li>
+            </li> --}}
+            {{-- <li>
                 <a class="inline-flex items-center w-full px-4 py-2 mt-1  text-gray-200 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-main"
                     href="{{ route('stakeholder.dashboard') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15"
@@ -279,7 +279,7 @@
                     </svg>
                     <span class="ml-4"> Policies </span>
                 </a>
-            </li>
+            </li> --}}
             <li>
                 <a class="inline-flex items-center w-full px-4 py-2 mt-1  text-gray-200 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-main"
                     href="{{ route('stakeholder.dashboard') }}">
@@ -292,7 +292,7 @@
                     <span class="ml-4"> System Log </span>
                 </a>
             </li>
-            <li>
+            {{-- <li>
                 <a class="inline-flex items-center w-full px-4 py-2 mt-1  text-gray-200 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-main"
                     href="{{ route('stakeholder.dashboard') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15"
@@ -303,7 +303,7 @@
                     </svg>
                     <span class="ml-4"> Access Control </span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </nav>
 </div>

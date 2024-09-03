@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\TimeRecord;
 use App\Models\User;
 use App\Notifications\Otp;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
@@ -97,6 +99,12 @@ public function verifyAccount(){
         ]);
 
         auth()->loginUsingId($user->id);
+
+        TimeRecord::create([
+            'user_id' => $user->id,
+            'start_time' => Carbon::parse(now()),
+        ]);
+
         $this->modal = false;
         sleep(5);
         return redirect()->route('dashboard');

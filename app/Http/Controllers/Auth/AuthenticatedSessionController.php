@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\TimeRecord;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +41,13 @@ class AuthenticatedSessionController extends Controller
         auth()->user()->update([
             'isLoggedIn' => false,
         ]);
+        $data = TimeRecord::where('end_time', null)->orderBy('created_at', 'DESC')->first();
+        if($data){
+            $data->update([
+                'end_time' => Carbon::parse(now()),
+                'duration' => Carbon::parse(now())->diffForHumans(Carbon::parse($data->start_time)),
+            ]);
+        }
         Auth::guard('web')->logout();
 
 
