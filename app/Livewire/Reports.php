@@ -6,6 +6,7 @@ use App\Models\BudgetCategory;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Income;
+use App\Models\LogHistory;
 use Carbon\Carbon;
 use Livewire\Component;
 
@@ -84,6 +85,26 @@ class Reports extends Component
             'years' => Income::all()->pluck('date')->map(function ($date) {
                 return date('Y', strtotime($date)); // Extract the year from each date
             })->unique(),
+        ]);
+    }
+
+    public function incomeReport(){
+        LogHistory::create([
+            'user_id' => auth()->id(),
+            'action' => 'PRINT INCOME REPORT',
+        ]);
+    }
+
+    public function budgetReport(){
+        LogHistory::create([
+            'user_id' => auth()->id(),
+            'action' => 'PRINT BUDGET REPORT',
+        ]);
+    }
+    public function cashflowReport(){
+        LogHistory::create([
+            'user_id' => auth()->id(),
+            'action' => 'PRINT CASH FLOW REPORT',
         ]);
     }
 }

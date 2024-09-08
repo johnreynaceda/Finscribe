@@ -180,7 +180,7 @@
                         </div>
                         <div class="mt-5">
                             <x-button label="PRINT REPORT" @click="printOut($refs.printContainer.outerHTML);"
-                                class="font-semibold" icon="printer" dark />
+                                wire:click="incomeReport" class="font-semibold" icon="printer" dark />
                         </div>
                     </div>
                 @break
@@ -347,7 +347,7 @@
                     </div>
                     <div class="mt-5">
                         <x-button label="PRINT REPORT" @click="printOut($refs.printContainer.outerHTML);"
-                            class="font-semibold" icon="printer" dark />
+                            wire:click="budgetReport" class="font-semibold" icon="printer" dark />
                     </div>
                 @break
 
@@ -923,7 +923,7 @@
                     </div>
                     <div class="mt-5">
                         <x-button label="PRINT REPORT" @click="printOut($refs.printContainer.outerHTML);"
-                            class="font-semibold" icon="printer" dark />
+                            class="font-semibold" wire:click="cashflowReport" icon="printer" dark />
                     </div>
                 @break
 

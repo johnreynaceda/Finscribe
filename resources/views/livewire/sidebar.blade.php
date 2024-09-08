@@ -229,7 +229,7 @@
             @endif
         </ul>
         <p class="px-4 pt-4 text-xs font-semibold text-gray-400 uppercase">
-            FINANCIAL MANAGEMENT SYSTEM (FMS)
+            AUDIT TRAIL
         </p>
         <ul class="mt-5">
             <li>
@@ -281,8 +281,8 @@
                 </a>
             </li> --}}
             <li>
-                <a class="inline-flex items-center w-full px-4 py-2 mt-1  text-gray-200 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-main"
-                    href="{{ route('stakeholder.dashboard') }}">
+                <a class="{{ request()->routeIs('stakeholder.system-log') ? 'bg-white text-main scale-95' : '' }}  inline-flex items-center w-full px-4 py-2 mt-1  text-gray-200 transition duration-200 ease-in-out transform rounded-lg focus:shadow-outline hover:bg-gray-100 hover:scale-95 hover:text-main"
+                    href="{{ route('stakeholder.system-log') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="15" height="15"
                         fill="currentColor">
                         <path

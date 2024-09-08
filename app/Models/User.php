@@ -60,4 +60,8 @@ class User extends Authenticatable
     public function timeRecords(){
         return $this->hasMany(TimeRecord::class);
     }
+
+    public function logHistories(){
+        return $this->hasMany(LogHistory::class);
+    }
 }

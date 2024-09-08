@@ -18,7 +18,8 @@ class AdminDescriptive extends Component
     public function render()
     {
 
-        $this->income = Income::whereBetween('date', [$this->date_from, $this->date_to])->sum('total_sales');
+        if ($this->date_from && $this->date_to) {
+            $this->income = Income::whereBetween('date', [$this->date_from, $this->date_to])->sum('total_sales');
 
         // Calculate total expenses for the week
         $this->expense = Expense::when(
@@ -40,6 +41,24 @@ class AdminDescriptive extends Component
 
         // Calculate revenue
         $this->revenue = $this->income - $this->expense;
+        }else{
+
+            $this->income = Income::whereMonth('date', now()->month)->sum('total_sales');
+
+            // Calculate total expenses for the week
+            $this->expense = Expense::whereMonth('date', now()->month)->sum('total_expense');
+
+            $from = Carbon::parse(now())->subMonth();
+            $to = Carbon::parse(now())->subMonth();
+
+            $b_income = Income::whereMonth('date', now()->month)->sum('total_sales');
+            $b_expense = Expense::whereMonth('date', now()->month)->sum('total_expense');
+
+            $this->beginning = $b_income - $b_expense;
+
+            // Calculate revenue
+            $this->revenue = $this->income - $this->expense;
+        }
 
         return view('livewire.admin-descriptive');
     }

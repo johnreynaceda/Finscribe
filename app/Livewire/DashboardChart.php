@@ -40,14 +40,22 @@ class DashboardChart extends Component
     public function loadData()
     {
         $this->chartValues = [];
-        $this->income = Income::whereYear('date', $this->year)->whereMonth('date', $this->month)->sum('total_sales');
 
-    // Calculate total expenses for the week
-    $this->expense = Expense::when(
-        $this->month, function($record){
-           $record->whereYear('date', $this->year)->whereMonth('date', $this->month);
+        if ($this->month && $this->year) {
+            $this->income = Income::whereYear('date', $this->year)->whereMonth('date', $this->month)->sum('total_sales');
+
+            // Calculate total expenses for the week
+            $this->expense = Expense::when(
+                $this->month, function($record){
+                   $record->whereYear('date', $this->year)->whereMonth('date', $this->month);
+                }
+            )->sum('total_expense');
+        }else{
+            $this->income = Income::whereYear('date', now()->year)->whereMonth('date', now()->month)->sum('total_sales');
+
+            // Calculate total expenses for the week
+            $this->expense = Expense::whereYear('date', now()->year)->whereMonth('date', now()->month)->sum('total_expense');
         }
-    )->sum('total_expense');
 
     // Calculate revenue
     $this->revenue = $this->income - $this->expense;

@@ -7,6 +7,7 @@ use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\ExpenseSubCategory;
 use App\Models\Income;
+use App\Models\LogHistory;
 use Carbon\Carbon;
 use Livewire\Component;
 
@@ -38,6 +39,10 @@ class BudgetingTracking extends Component
     ->pluck('expense_sub_category_id')
     ->unique();
 
+    LogHistory::create([
+        'user_id' => auth()->user()->id,
+        'action' => 'GENERATE BUDGET TRACKING',
+    ]);
 
     $this->expenses = ExpenseCategory::whereHas('expenseSubCategories', function($query) use ($expenseSubCategoryIds) {
         $query->whereIn('id', $expenseSubCategoryIds);

@@ -9,6 +9,7 @@ use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\Income;
 use App\Models\IncomeUpload;
+use App\Models\LogHistory;
 use App\Models\Shop\Product;
 use App\Models\User;
 use Filament\Forms\Components\DatePicker;
@@ -63,6 +64,10 @@ class IncomeList extends Component implements HasForms, HasTable
                          }else{
                             IncomeUpload::create([
                                 'filename' => $this->file->getClientOriginalName(),
+                            ]);
+                            LogHistory::create([
+                                'user_id' => auth()->user()->id,
+                                'action' => 'UPLOAD INCOME REPORT',
                             ]);
                             \Maatwebsite\Excel\Facades\Excel::import(new IncomeImport,$this->file);
                             sweetalert()->success('Uploaded Successfully');

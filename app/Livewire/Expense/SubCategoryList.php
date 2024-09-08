@@ -6,6 +6,7 @@ use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
 use App\Models\ExpenseCategory;
 use App\Models\ExpenseSubCategory;
+use App\Models\LogHistory;
 use App\Models\Shop\Product;
 use App\Models\User;
 use Filament\Forms\Components\Select;
@@ -41,6 +42,10 @@ class SubCategoryList extends Component implements HasForms, HasTable
                             'expense_category_id' => $data['expense_category_id'],
                             'name' => $data['name'],
                         ]);
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => 'CREATE EXPENSE SUB CATEGORY',
+                        ]);
                         sweetalert()->success('Added Successfully');
                     }
                 )->form([
@@ -57,11 +62,33 @@ class SubCategoryList extends Component implements HasForms, HasTable
                 // ...
             ])
             ->actions([
-               EditAction::make('edit')->color('success')->form([
+               EditAction::make('edit')->color('success')->action(
+                 function($record, $data){
+                        $record->update([
+                           'expense_category_id' => $data['expense_category_id'],
+                           'name' => $data['name'],
+                        ]);
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => 'UPDATE EXPENSE SUB CATEGORY',
+                        ]);
+                        sweetalert()->success('Updated Successfully');
+                    }
+                )->form([
                 Select::make('expense_category_id')->label('Expense Category')->options(ExpenseCategory::all()->pluck('name', 'id'))->required(),
                 TextInput::make('name')->required(),
                ])->modalWidth('xl'),
-               DeleteAction::make('delete')
+               DeleteAction::make('delete')->action(
+                 function($record, $data){
+                        $record->delete();
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => 'DELETE EXPENSE SUB CATEGORY',
+                        ]);
+                        sweetalert()->success('Deleted Successfully');
+                    }
+
+               )
             ])
             ->bulkActions([
                 // ...

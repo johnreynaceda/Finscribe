@@ -7,6 +7,7 @@ use App\Mail\UserStatus;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
 use App\Models\ExpenseSubCategory;
+use App\Models\LogHistory;
 use App\Models\Shop\Product;
 use App\Models\User;
 use Carbon\Carbon;
@@ -49,6 +50,10 @@ class ExpenseList extends Component implements HasForms, HasTable
                             'notes' => $data['notes'],
                             'user_id' => auth()->user()->id,
                             'date' => Carbon::parse($data['date']),
+                        ]);
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => 'CREATE EXPENSE REPORT',
                         ]);
                         sweetalert()->success('Added Successfully');
                     }
@@ -98,7 +103,22 @@ class ExpenseList extends Component implements HasForms, HasTable
                 })
             ])
             ->actions([
-               EditAction::make('edit')->color('success')->form([
+               EditAction::make('edit')->color('success')->action(
+                function($record, $data){
+                    $record->update([
+                        'expense_sub_category_id' => $data['expense_sub_category_id'],
+                        'people_in_charge' => $data['people_in_charge'],
+                        'total_expense' => $data['total_expense'],
+                        'notes' => $data['notes'],
+                        'date' => Carbon::parse($data['date']),
+                    ]);
+                    LogHistory::create([
+                        'user_id' => auth()->user()->id,
+                        'action' => 'UPDATE EXPENSE REPORT',
+                    ]);
+                    sweetalert()->success('Updated Successfully');
+                }
+               )->form([
                 Select::make('expense_sub_category_id')->label('Expense Account')->searchable()->options(
                     ExpenseSubCategory::all()->mapWithKeys(function($record){
                         return [$record->id => $record->expenseCategory->name.' - '.$record->name];
@@ -109,7 +129,16 @@ class ExpenseList extends Component implements HasForms, HasTable
                 Textarea::make('notes'),
                 DatePicker::make('date')->required()
                ]),
-               DeleteAction::make('delete')
+               DeleteAction::make('delete')->action(
+                function($record, $data){
+                    $record->delete();
+                    LogHistory::create([
+                        'user_id' => auth()->user()->id,
+                        'action' => 'DELETE EXPENSE REPORT',
+                    ]);
+                    sweetalert()->success('Deleted Successfully');
+                }
+               )
             ])
             ->bulkActions([
                 // ...

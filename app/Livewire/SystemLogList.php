@@ -2,8 +2,10 @@
 
 namespace App\Livewire;
 
+use App\Models\LogHistory;
 use App\Models\Shop\Product;
 use App\Models\TimeRecord;
+use Carbon\Carbon;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Actions\DeleteAction;
@@ -15,7 +17,7 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class LiveTracking extends Component implements HasForms, HasTable
+class SystemLogList extends Component implements HasForms, HasTable
 {
     use InteractsWithTable;
     use InteractsWithForms;
@@ -23,16 +25,16 @@ class LiveTracking extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(TimeRecord::query()->orderBy('created_at', 'DESC'))
+            ->query(LogHistory::query()->orderBy('created_at', 'DESC'))
             ->columns([
-                TextColumn::make('user.name')->label('FULLNAME')->searchable(),
-                TextColumn::make('id')->label('USER ROLE')->formatStateUsing(
-                    fn($record) => $record->user->name == null ? 'NO NAME/DELETED' : strtoupper( $record->user->user_type)
+                TextColumn::make('id')->label('FULLNAME')->formatStateUsing(
+                    fn($record) => $record->user->name ?? 'NO NAME/DELETED'
                 )->searchable(),
-
-                TextColumn::make('start_time')->date('F d, Y h:i A')->label('START TIME'),
-                TextColumn::make('end_time')->date('F d, Y h:i A')->label('END TIME'),
-                TextColumn::make('duration')->label('DURATION'),
+                TextColumn::make('user')->label('USER ROLE')->formatStateUsing(
+                    fn($record) => $record->user->name == null ? 'NO NAME/DELETED' : strtoupper($record->user->user_type)
+                )->searchable(),
+                TextColumn::make('action')->label('ACTIONS')->searchable(),
+                TextColumn::make('created_at')->label('DATE & TIME STAMP')->date('F d, Y h:i A')->searchable(),
             ])
             ->filters([
                 // ...
@@ -48,6 +50,6 @@ class LiveTracking extends Component implements HasForms, HasTable
 
     public function render()
     {
-        return view('livewire.live-tracking');
+        return view('livewire.system-log-list');
     }
 }

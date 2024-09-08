@@ -6,6 +6,7 @@ use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
 use App\Models\BudgetCategory;
 use App\Models\ExpenseCategory;
+use App\Models\LogHistory;
 use App\Models\Shop\Product;
 use App\Models\User;
 use Filament\Forms\Components\Select;
@@ -34,7 +35,18 @@ class BudgetCategoryList extends Component implements HasForms, HasTable
     {
         return $table
             ->query(BudgetCategory::query())->headerActions([
-                CreateAction::make('new_category')->form([
+                CreateAction::make('new_category')->action(
+                    function($record, $data){
+                        BudgetCategory::create([
+                            'expense_category_id' => $data['expense_category_id'],
+                            'amount' => $data['amount'],
+                        ]);
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => 'CREATE BUDGET CATEGORY',
+                        ]);
+                    }
+                )->form([
                     Select::make('expense_category_id')->label('Expense Category')->options(
                         ExpenseCategory::pluck('name', 'id'),
                     )->required()->unique(),
@@ -54,13 +66,32 @@ class BudgetCategoryList extends Component implements HasForms, HasTable
                 // ...
             ])
             ->actions([
-               EditAction::make('edit')->color('success')->form([
+               EditAction::make('edit')->color('success')->action(
+                function($record, $data){
+                    $record->update([
+                        'expense_category_id' => $data['expense_category_id'],
+                        'amount' => $data['amount'],
+                    ]);
+                    LogHistory::create([
+                        'user_id' => auth()->user()->id,
+                        'action' => 'UPDATE BUDGET CATEGORY',
+                    ]);
+                }
+               )->form([
                 Select::make('expense_category_id')->label('Expense Category')->options(
                     ExpenseCategory::pluck('name', 'id'),
                 )->required(),
                 TextInput::make('amount')->label('Alloted Amount')->numeric()->required(),
                ]),
-               DeleteAction::make('delete')
+               DeleteAction::make('delete')->action(
+                function($record){
+                    $record->delete();
+                    LogHistory::create([
+                        'user_id' => auth()->user()->id,
+                        'action' => 'DELETE BUDGET CATEGORY',
+                    ]);
+                }
+               )
             ])
             ->bulkActions([
                 // ...

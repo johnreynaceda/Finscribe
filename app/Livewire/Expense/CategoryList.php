@@ -5,6 +5,7 @@ namespace App\Livewire\Expense;
 use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
 use App\Models\ExpenseCategory;
+use App\Models\LogHistory;
 use App\Models\Shop\Product;
 use App\Models\User;
 use Filament\Forms\Components\TextInput;
@@ -38,6 +39,10 @@ class CategoryList extends Component implements HasForms, HasTable
                         ExpenseCategory::create([
                             'name' => $data['name'],
                         ]);
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => 'CREATE EXPENSE CATEGORY',
+                        ]);
                         sweetalert()->success('Added Successfully');
                     }
                 )->form([
@@ -52,10 +57,31 @@ class CategoryList extends Component implements HasForms, HasTable
                 // ...
             ])
             ->actions([
-               EditAction::make('edit')->color('success')->form([
+               EditAction::make('edit')->color('success')->action(
+                function($record, $data){
+                        $record->update([
+                           'name' => $data['name'],
+                        ]);
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => 'EDIT EXPENSE CATEGORY',
+                        ]);
+                        sweetalert()->success('Updated Successfully');
+                    }
+                )->form([
                 TextInput::make('name')->required(),
                ]),
-               DeleteAction::make('delete')
+               DeleteAction::make('delete')->action(
+                function($record){
+                        $record->delete();
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => 'DELETE EXPENSE CATEGORY',
+                        ]);
+                        sweetalert()->success('Deleted Successfully');
+                    }
+
+               )
             ])
             ->bulkActions([
                 // ...

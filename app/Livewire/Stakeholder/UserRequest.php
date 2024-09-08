@@ -4,6 +4,7 @@ namespace App\Livewire\Stakeholder;
 
 use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
+use App\Models\LogHistory;
 use App\Models\Shop\Product;
 use App\Models\User;
 use App\Models\UserInformation;
@@ -48,6 +49,11 @@ class UserRequest extends Component implements HasForms, HasTable
                             'firstname' => $data['firstname'],
                             'lastname' => $data['lastname'],
                         ]);
+
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => "CREATE USER",
+                        ]);
                         sweetalert()->success('User created successfully');
                         $user->notify(new CreateAccount($user->name));
 
@@ -81,6 +87,10 @@ class UserRequest extends Component implements HasForms, HasTable
                            'user_type' => $data['user_type'],
                            'password' => bcrypt($data['password']),
                         ]);
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => "UPDATE USER",
+                        ]);
                         sweetalert()->success('User updated successfully');
                     }
                 )->form([
@@ -93,7 +103,16 @@ class UserRequest extends Component implements HasForms, HasTable
                     ]),
                     TextInput::make('password')->password()->required(),
                 ])->modalWidth('xl')->modalHeading('Edit User'),
-                DeleteAction::make('delete'),
+                DeleteAction::make('delete')->action(
+                    function($record){
+                        $record->delete();
+                        LogHistory::create([
+                            'user_id' => auth()->user()->id,
+                            'action' => "DELETE USER",
+                        ]);
+                        sweetalert()->success('User deleted successfully');
+                    }
+                ),
             ])
             ->bulkActions([
                 // ...

@@ -72,6 +72,9 @@ Route::prefix('/stakeholder')->middleware([CheckLoggedIn::class])->group(
         Route::get('/live-tracking', function(){
             return view('stakeholder.live-tracking');
         })->name('stakeholder.live-tracking');
+        Route::get('/system-log', function(){
+            return view('stakeholder.system-log');
+        })->name('stakeholder.system-log');
     }
 );
 
