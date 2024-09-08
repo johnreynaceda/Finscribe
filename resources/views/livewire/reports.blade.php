@@ -100,15 +100,35 @@
                         <div>
                             @php
                                 $totalExpenses = 0; // Initialize total expenses variable
+
                             @endphp
                             @foreach ($expenses as $item)
+                                @php
+                                    $expenseSubCategories = \App\Models\ExpenseSubCategory::whereHas(
+                                        'expenses',
+                                        function ($query) {
+                                            $query
+                                                ->whereYear('date', $this->year)
+                                                ->whereMonth('date', $this->month)
+                                                ->where('total_expense', '>', 0);
+                                        },
+                                    )
+                                        ->where('expense_category_id', $item->id)
+                                        ->with([
+                                            'expenses' => function ($query) {
+                                                // Eager load expenses filtered by month and year
+                                                $query
+                                                    ->whereYear('date', $this->year)
+                                                    ->whereMonth('date', $this->month);
+                                            },
+                                        ])
+                                        ->get();
+                                @endphp
                                 <li class="flex justify-between bg-blue-100 p-2">
                                     <h1 class="pl-20 font-bold  text-xl">{{ $item->name }}</h1>
                                     {{-- <h1>&#8369;{{ number_format($item->expenses->sum('total_expense'), 2) }}</h1> --}}
                                 </li>
-                                @foreach (\App\Models\ExpenseSubCategory::where('expense_category_id', $item->id)->whereHas('expenses', function ($q) {
-                    $q->whereYear('date', $this->year)->whereMonth('date', $this->month)->where('total_expense', '>', 0);
-                })->get() as $record)
+                                @foreach ($expenseSubCategories as $record)
                                     <li class="flex justify-between p-1">
                                         <h1 class="pl-20 ">{{ $record->name }}</h1>
                                         <h1>&#8369;{{ number_format($record->expenses->sum('total_expense'), 2) }}</h1>
