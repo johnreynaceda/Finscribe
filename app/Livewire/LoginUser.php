@@ -19,6 +19,7 @@ class LoginUser extends Component
     public $modal = false;
     public $user_id;
     public $option_modal = false;
+    public $contact_number;
     public $option;
     use Actions;
 
@@ -79,6 +80,7 @@ public function optionMethod($option){
     }else{
         $data = User::where('email', $this->email)->first();
         $this->user_id = $data->id;
+        $this->contact_number = $data->userInformation->contact;
         $random = rand(1000, 9999);
         $data->update([
             'otp' => $random,

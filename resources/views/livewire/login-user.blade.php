@@ -63,8 +63,13 @@
                         <div class="bg-white p-4 text-center rounded-lg ">
                             <center> <img src="{{ asset('images/otp.jpg') }}" class="h-48" alt=""></center>
                             <h1 class="text-sm text-center mt-5">Thanks for keeping your account secure. </h1>
-                            <p class="text-sm text-center mb-4">Check your email notification: <span
-                                    class="font-semibold text-black">{{ $email ?? '' }}</span></p>
+                            @if ($option == 'email')
+                                <p class="text-sm text-center mb-4">Check your email notification: <span
+                                        class="font-semibold text-black">{{ $email ?? '' }}</span></p>
+                            @else
+                                <p class="text-sm text-center mb-4">Check your phone for sms notification: <span
+                                        class="font-semibold text-black">{{ $contact_number ?? '' }}</span></p>
+                            @endif
                             <h1 class="font-bold">Your OTP code:</h1>
                             <div class="flex space-x-2 mt-5">
                                 <div class="flex flex-row   items-center justify-between mx-auto w-full max-w-xs"
