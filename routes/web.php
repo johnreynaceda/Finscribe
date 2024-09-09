@@ -81,10 +81,15 @@ Route::prefix('/stakeholder')->middleware([CheckLoggedIn::class])->group(
 //employee
 Route::prefix('/employee')->middleware([CheckLoggedIn::class])->group(
     function(){
-
         Route::get('/dashboard', function(){
+            if (auth()->user() == null) {
+                return redirect()->route('dashboard');
+            }else{
                 return view('employee.index');
-        })->name('employee.dashboard');
+            }
+
+    })->name('employee.dashboard');
+
     }
 );
 

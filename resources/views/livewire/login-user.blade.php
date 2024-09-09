@@ -141,14 +141,9 @@
                             <p>OTP will be sent to user email address</p>
                         </div>
                     </li>
-                    <li
-                        class="flex  gap-x-6 py-5 border relative px-5 rounded-xl bg-gray-100 overflow-hidden cursor-pointer hover:scale-95">
-                        <div
-                            class="absolute top-0 bg-gray-300 left-0 text-red-600 text-lg w-full grid place-content-center h-full bg-opacity-70">
-                            <p class="animate-pulse">
-                                Coming soon...
-                                </pa>
-                        </div>
+                    <li class="flex  gap-x-6 py-5 border relative px-5 rounded-xl bg-gray-100 overflow-hidden cursor-pointer hover:scale-95"
+                        wire:click="optionMethod('sms')">
+
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                                 class="text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"

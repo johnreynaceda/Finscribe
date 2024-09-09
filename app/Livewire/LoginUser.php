@@ -77,7 +77,35 @@ public function optionMethod($option){
         $this->modal = true;
 
     }else{
-        dd('no sms found');
+        $data = User::where('email', $this->email)->first();
+        $this->user_id = $data->id;
+        $random = rand(1000, 9999);
+        $data->update([
+            'otp' => $random,
+        ]);
+
+        $this->option_modal = false;
+
+        $this->modal = true;
+
+        $ch = curl_init();
+        $parameters = array(
+        'apikey' => '1aaad08e0678a1c60ce55ad2000be5bd', //Your API KEY
+        'number' => $data->userInformation->contact,
+        'message' => "Dear ". $data->name. "\n". "We have an OTP code that you can use to verify your account."."\n". "OTP CODE : " . $data->otp,
+        'sendername' => 'FINSCRIBE'
+        );
+        curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($ch);
+        curl_close($ch);
+
+        $this->option_modal = false;
+
+        $this->modal = true;
+
     }
 
 }

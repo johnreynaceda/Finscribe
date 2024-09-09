@@ -10,7 +10,7 @@
                                 {{ now()->format('F d, Y') }}</span>
                         </div>
                     </div>
-                    <x-button label="View Report" right-icon="document-text" />
+                    <x-button label="View Report" href="{{ route('stakeholder.expense') }}" right-icon="document-text" />
 
                 </div>
                 <div class="mt-5 h-96  flex-1" wire:ignore>
