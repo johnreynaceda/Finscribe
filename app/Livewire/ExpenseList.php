@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\ReceivedNotification;
 use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
 use App\Models\Expense;
@@ -31,9 +32,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Flasher\SweetAlert\Prime\SweetAlertInterface;
-
+use WireUi\Traits\Actions;
 class ExpenseList extends Component implements HasForms, HasTable
 {
+    use Actions;
     use InteractsWithTable;
     use InteractsWithForms;
 
@@ -55,7 +57,25 @@ class ExpenseList extends Component implements HasForms, HasTable
                             'user_id' => auth()->user()->id,
                             'action' => 'CREATE EXPENSE REPORT',
                         ]);
+
                         sweetalert()->success('Added Successfully');
+
+                        \App\Models\Notification::create([
+                            'uploaded_by' => auth()->user()->user_type,
+                            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense report',
+                        ]);
+
+
+                        $this->notification()->success(
+                            $title = 'Notification',
+                            $description = auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense report.',
+                        );
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense report';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
                     }
                 )->form([
                     Select::make('expense_sub_category_id')->label('Expense Account')->searchable()->options(

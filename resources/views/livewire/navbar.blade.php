@@ -4,7 +4,63 @@
             <img src="{{ asset('images/logo.jpg') }}" class="h-12 w-12 rounded-full" alt="">
             <span class="text-2xl text-main">FinScribe</span>
         </div>
-        <div class="">
+        <div class="flex space-x-4 items-center">
+            <div x-data="{ notif: false }" class="relative">
+                <button type="button" @click="notif = !notif" @click.away="notif=false"
+                    class="inline-flex items-center gap-x-1 text-sm hover:scale-95 hover:text-gray-700 font-semibold leading-6 text-gray-900"
+                    aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-green-700" width="30" height="30"
+                        viewBox="0 0 24 24" fill="currentColor"
+                        class="icon icon-tabler icons-tabler-filled icon-tabler-bell">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M14.235 19c.865 0 1.322 1.024 .745 1.668a3.992 3.992 0 0 1 -2.98 1.332a3.992 3.992 0 0 1 -2.98 -1.332c-.552 -.616 -.158 -1.579 .634 -1.661l.11 -.006h4.471z" />
+                        <path
+                            d="M12 2c1.358 0 2.506 .903 2.875 2.141l.046 .171l.008 .043a8.013 8.013 0 0 1 4.024 6.069l.028 .287l.019 .289v2.931l.021 .136a3 3 0 0 0 1.143 1.847l.167 .117l.162 .099c.86 .487 .56 1.766 -.377 1.864l-.116 .006h-16c-1.028 0 -1.387 -1.364 -.493 -1.87a3 3 0 0 0 1.472 -2.063l.021 -.143l.001 -2.97a8 8 0 0 1 3.821 -6.454l.248 -.146l.01 -.043a3.003 3.003 0 0 1 2.562 -2.29l.182 -.017l.176 -.004z" />
+                    </svg>
+                </button>
+
+                <div x-show="notif" x-cloak x-transition:enter="transition ease-out duration-200"
+                    x-transition:enter-start="opacity-0 translate-y-1"
+                    x-transition:enter-end="opacity-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-150"
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 translate-y-1"
+                    class="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4">
+                    <div
+                        class="w-screen max-w-sm flex-auto overflow-hidden rounded-lg bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
+                        <ul role="list" class="divide-y divide-gray-100 p-2">
+                            @forelse ($notifications as $item)
+                                <li class="flex gap-x-4 py-2">
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="30"
+                                            class="text-red-600 animate-pulse" height="30" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-notification">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                                            <path d="M17 7m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex-auto">
+                                        <div class="flex items-baseline justify-between gap-x-4">
+                                            <p class="text-sm font-semibold leading-6 text-gray-900"></p>
+                                            <p class="flex-none text-xs text-gray-600">
+                                                <time
+                                                    datetime="2023-03-04T15:54Z">{{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</time>
+                                            </p>
+                                        </div>
+                                        <p class="mt-1 line-clamp-2 text-sm leading-6 text-gray-600">
+                                            {{ $item->details }}</p>
+                                    </div>
+                                </li>
+                            @empty
+                            @endforelse
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div x-data="{
                 dropdownOpen: false
             }" class="hidden 2xl:block relative">

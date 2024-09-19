@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\ReceivedNotification;
 use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
 use App\Models\BudgetCategory;
@@ -45,6 +46,23 @@ class BudgetCategoryList extends Component implements HasForms, HasTable
                             'user_id' => auth()->user()->id,
                             'action' => 'CREATE BUDGET CATEGORY',
                         ]);
+
+                        \App\Models\Notification::create([
+                            'uploaded_by' => auth()->user()->user_type,
+                            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has create a budget category',
+                        ]);
+
+
+                        // $this->notification()->success(
+                        //     $title = 'Notification',
+                        //     $description = auth()->user()->user_type.'_'.auth()->user()->name.' has create a budget category',
+                        // );
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has create a budget category';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
                     }
                 )->form([
                     Select::make('expense_category_id')->label('Expense Category')->options(
@@ -76,6 +94,21 @@ class BudgetCategoryList extends Component implements HasForms, HasTable
                         'user_id' => auth()->user()->id,
                         'action' => 'UPDATE BUDGET CATEGORY',
                     ]);
+
+                    \App\Models\Notification::create([
+                        'uploaded_by' => auth()->user()->user_type,
+                        'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has update a budget category',
+                    ]);
+
+
+
+
+
+                    $message = auth()->user()->user_type.'_'.auth()->user()->name.' has update a budget category';
+
+                    // broadcast(new ReceivedNotification());
+                    ReceivedNotification::dispatch($message,auth()->user()->user_type);
+
                 }
                )->form([
                 Select::make('expense_category_id')->label('Expense Category')->options(
@@ -90,6 +123,20 @@ class BudgetCategoryList extends Component implements HasForms, HasTable
                         'user_id' => auth()->user()->id,
                         'action' => 'DELETE BUDGET CATEGORY',
                     ]);
+
+                    \App\Models\Notification::create([
+                        'uploaded_by' => auth()->user()->user_type,
+                        'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has delete a budget category.',
+                    ]);
+
+
+
+
+
+                    $message = auth()->user()->user_type.'_'.auth()->user()->name.' has delete a budget category.';
+
+                    // broadcast(new ReceivedNotification());
+                    ReceivedNotification::dispatch($message,auth()->user()->user_type);
                 }
                )
             ])

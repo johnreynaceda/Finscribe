@@ -1,11 +1,16 @@
 <?php
 
+use App\Events\CreateUser;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\CheckLoggedIn;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/broadcast', function () {
+   CreateUser::dispatch();
 });
 
 Route::get('/dashboard', function () {

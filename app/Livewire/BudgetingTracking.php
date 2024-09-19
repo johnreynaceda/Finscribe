@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\ReceivedNotification;
 use App\Models\BudgetCategory;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
@@ -44,12 +45,32 @@ class BudgetingTracking extends Component
         'action' => 'GENERATE BUDGET TRACKING',
     ]);
 
+
     $this->expenses = ExpenseCategory::whereHas('expenseSubCategories', function($query) use ($expenseSubCategoryIds) {
         $query->whereIn('id', $expenseSubCategoryIds);
     })->get();
 
         $this->month_name = Carbon::createFromDate($this->year, $this->month, 1)->format('F');
+
+        \App\Models\Notification::create([
+            'uploaded_by' => auth()->user()->user_type,
+            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has generate budget tracking.',
+        ]);
+
+
+        // $this->notification()->success(
+        //     $title = 'Notification',
+        //     $description = auth()->user()->user_type.'_'.auth()->user()->name.' has generate budget tracking.',
+        // );
+
+
+        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has generate budget tracking.';
+
+        // broadcast(new ReceivedNotification());
+        ReceivedNotification::dispatch($message,auth()->user()->user_type);
     }
+
+
 
     public function render()
     {

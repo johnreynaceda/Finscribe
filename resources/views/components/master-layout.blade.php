@@ -26,6 +26,7 @@
 
 <body class="font-sans antialiased">
 
+    <x-notifications z-index="z-50" />
     <div class="flex h-screen overflow-hidden bg-gray-200">
         <div class="hidden md:flex md:flex-shrink-0">
             <div class="flex flex-col w-64">
@@ -72,6 +73,9 @@
             </main>
         </div>
     </div>
+
+
+
     @filamentScripts
     @vite('resources/js/app.js')
 </body>

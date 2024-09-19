@@ -1,4 +1,9 @@
 <div>
+    @if (session('status'))
+        <div class="alert alert-success">
+            {{ session('status') }}
+        </div>
+    @endif
     <div class="flex space-x-3 w-96 mb-3">
         <x-datetime-picker label="Date From" placeholder="" wire:model.live="date_from"
             placeholder="{{ now()->format('m/d/Y') }}" without-time without-timezone />

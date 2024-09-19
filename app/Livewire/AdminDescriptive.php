@@ -2,17 +2,26 @@
 
 namespace App\Livewire;
 
+use App\Events\ReceivedNotification;
 use App\Models\Expense;
 use App\Models\Income;
 use Carbon\Carbon;
+use Livewire\Attributes\On;
 use Livewire\Component;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
+use WireUi\Traits\Actions;
 
-class AdminDescriptive extends Component
+class AdminDescriptive extends Component implements HasForms
 {
+    use Actions;
+    use InteractsWithForms;
     public $date_from, $date_to;
 
     public $revenue, $expense, $budget, $beginning, $end, $income;
-
 
 
     public function render()

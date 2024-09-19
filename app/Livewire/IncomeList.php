@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\ReceivedNotification;
 use App\Imports\IncomeImport;
 use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
@@ -71,6 +72,17 @@ class IncomeList extends Component implements HasForms, HasTable
                             ]);
                             \Maatwebsite\Excel\Facades\Excel::import(new IncomeImport,$this->file);
                             sweetalert()->success('Uploaded Successfully');
+
+                            $this->notification()->success(
+                                $title = 'Notification',
+                                $description = auth()->user()->user_type.'_'.auth()->user()->name.' has upload an income report',
+                            );
+
+
+                            $message = auth()->user()->user_type.'_'.auth()->user()->name.' has upload an income report';
+
+                            // broadcast(new ReceivedNotification());
+                            ReceivedNotification::dispatch($message,auth()->user()->user_type);
                          }
                     }
                 )->form([

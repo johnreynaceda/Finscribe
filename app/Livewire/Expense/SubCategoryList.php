@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Expense;
 
+use App\Events\ReceivedNotification;
 use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
 use App\Models\ExpenseCategory;
@@ -47,6 +48,23 @@ class SubCategoryList extends Component implements HasForms, HasTable
                             'action' => 'CREATE EXPENSE SUB CATEGORY',
                         ]);
                         sweetalert()->success('Added Successfully');
+
+                        \App\Models\Notification::create([
+                            'uploaded_by' => auth()->user()->user_type,
+                            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense sub category',
+                        ]);
+
+
+                        // $this->notification()->success(
+                        //     $title = 'Notification',
+                        //     $description = auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense report.',
+                        // );
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense sub category';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
                     }
                 )->form([
                     Select::make('expense_category_id')->label('Expense Category')->options(ExpenseCategory::all()->pluck('name', 'id'))->required(),
@@ -73,6 +91,23 @@ class SubCategoryList extends Component implements HasForms, HasTable
                             'action' => 'UPDATE EXPENSE SUB CATEGORY',
                         ]);
                         sweetalert()->success('Updated Successfully');
+
+                        \App\Models\Notification::create([
+                            'uploaded_by' => auth()->user()->user_type,
+                            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has update a expense sub category',
+                        ]);
+
+
+                        // $this->notification()->success(
+                        //     $title = 'Notification',
+                        //     $description = auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense report.',
+                        // );
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has update a expense sub category';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
                     }
                 )->form([
                 Select::make('expense_category_id')->label('Expense Category')->options(ExpenseCategory::all()->pluck('name', 'id'))->required(),
@@ -86,6 +121,23 @@ class SubCategoryList extends Component implements HasForms, HasTable
                             'action' => 'DELETE EXPENSE SUB CATEGORY',
                         ]);
                         sweetalert()->success('Deleted Successfully');
+
+                        \App\Models\Notification::create([
+                            'uploaded_by' => auth()->user()->user_type,
+                            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has delete a expense sub category',
+                        ]);
+
+
+                        // $this->notification()->success(
+                        //     $title = 'Notification',
+                        //     $description = auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense report.',
+                        // );
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has delete a expense sub category';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
                     }
 
                )

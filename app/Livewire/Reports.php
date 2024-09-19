@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\ReceivedNotification;
 use App\Models\BudgetCategory;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
@@ -93,6 +94,20 @@ class Reports extends Component
             'user_id' => auth()->id(),
             'action' => 'PRINT INCOME REPORT',
         ]);
+
+        \App\Models\Notification::create([
+            'uploaded_by' => auth()->user()->user_type,
+            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has print a income report.',
+        ]);
+
+
+
+
+
+        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has print a income report.';
+
+        // broadcast(new ReceivedNotification());
+        ReceivedNotification::dispatch($message,auth()->user()->user_type);
     }
 
     public function budgetReport(){
@@ -100,11 +115,39 @@ class Reports extends Component
             'user_id' => auth()->id(),
             'action' => 'PRINT BUDGET REPORT',
         ]);
+
+        \App\Models\Notification::create([
+            'uploaded_by' => auth()->user()->user_type,
+            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has print a budget report.',
+        ]);
+
+
+
+
+
+        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has print a budget report.';
+
+        // broadcast(new ReceivedNotification());
+        ReceivedNotification::dispatch($message,auth()->user()->user_type);
     }
     public function cashflowReport(){
         LogHistory::create([
             'user_id' => auth()->id(),
             'action' => 'PRINT CASH FLOW REPORT',
         ]);
+
+        \App\Models\Notification::create([
+            'uploaded_by' => auth()->user()->user_type,
+            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has print a cash flow report.',
+        ]);
+
+
+
+
+
+        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has print a cash flow report.';
+
+        // broadcast(new ReceivedNotification());
+        ReceivedNotification::dispatch($message,auth()->user()->user_type);
     }
 }

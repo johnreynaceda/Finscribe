@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Stakeholder;
 
+use App\Events\ReceivedNotification;
+use App\Livewire\AdminDescriptive;
 use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
 use App\Models\LogHistory;
@@ -29,9 +31,11 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 use Flasher\SweetAlert\Prime\SweetAlertInterface;
-
+use WireUi\Traits\Actions;
 class UserRequest extends Component implements HasForms, HasTable
 {
+    use Actions;
+
     use InteractsWithTable;
     use InteractsWithForms;
 
@@ -59,6 +63,25 @@ class UserRequest extends Component implements HasForms, HasTable
                             'user_id' => auth()->user()->id,
                             'action' => "CREATE USER",
                         ]);
+
+                        \App\Models\Notification::create([
+                            'uploaded_by' => auth()->user()->user_type,
+                            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has created a user record',
+                        ]);
+                        $this->notification()->success(
+                            $title = 'Notification',
+                            $description = auth()->user()->user_type.'_'.auth()->user()->name.' has created a user record',
+                        );
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has created a user record';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
+
+                        // $this->emit('refresh');
+
+
                         sweetalert()->success('User created successfully');
                         $user->notify(new CreateAccount($user->name));
 
@@ -107,6 +130,23 @@ class UserRequest extends Component implements HasForms, HasTable
                             'user_id' => auth()->user()->id,
                             'action' => "UPDATE USER",
                         ]);
+                        \App\Models\Notification::create([
+                            'uploaded_by' => auth()->user()->user_type,
+                            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has updated a user record',
+                        ]);
+
+                        $this->notification()->success(
+                            $title = 'Notification',
+                            $description = auth()->user()->user_type.'_'.auth()->user()->name.' has updated a user record',
+                        );
+
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has update a user record';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
+
                         sweetalert()->success('User updated successfully');
                     }
                 )->form(
@@ -135,6 +175,18 @@ class UserRequest extends Component implements HasForms, HasTable
                             'user_id' => auth()->user()->id,
                             'action' => "DELETE USER",
                         ]);
+
+                        $this->notification()->success(
+                            $title = 'Notification',
+                            $description = auth()->user()->user_type.'_'.auth()->user()->name.' has delete a user record',
+                        );
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has delete a user record';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
+
                         sweetalert()->success('User deleted successfully');
                     }
                 ),

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Expense;
 
+use App\Events\ReceivedNotification;
 use App\Mail\RejectAccount;
 use App\Mail\UserStatus;
 use App\Models\ExpenseCategory;
@@ -44,6 +45,23 @@ class CategoryList extends Component implements HasForms, HasTable
                             'action' => 'CREATE EXPENSE CATEGORY',
                         ]);
                         sweetalert()->success('Added Successfully');
+
+                        \App\Models\Notification::create([
+                            'uploaded_by' => auth()->user()->user_type,
+                            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense category',
+                        ]);
+
+
+                        // $this->notification()->success(
+                        //     $title = 'Notification',
+                        //     $description = auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense category.',
+                        // );
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense category';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
                     }
                 )->form([
                     TextInput::make('name')->required(),
@@ -67,6 +85,23 @@ class CategoryList extends Component implements HasForms, HasTable
                             'action' => 'EDIT EXPENSE CATEGORY',
                         ]);
                         sweetalert()->success('Updated Successfully');
+
+                        \App\Models\Notification::create([
+                            'uploaded_by' => auth()->user()->user_type,
+                            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has edit a expense category',
+                        ]);
+
+
+                        // $this->notification()->success(
+                        //     $title = 'Notification',
+                        //     $description = auth()->user()->user_type.'_'.auth()->user()->name.' has edit a expense report.',
+                        // );
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has edit a expense category';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
                     }
                 )->form([
                 TextInput::make('name')->required(),
@@ -79,6 +114,23 @@ class CategoryList extends Component implements HasForms, HasTable
                             'action' => 'DELETE EXPENSE CATEGORY',
                         ]);
                         sweetalert()->success('Deleted Successfully');
+
+                        \App\Models\Notification::create([
+                            'uploaded_by' => auth()->user()->user_type,
+                            'details' => auth()->user()->user_type.'_'.auth()->user()->name.' has delete a expense category',
+                        ]);
+
+
+                        // $this->notification()->success(
+                        //     $title = 'Notification',
+                        //     $description = auth()->user()->user_type.'_'.auth()->user()->name.' has create a expense report.',
+                        // );
+
+
+                        $message = auth()->user()->user_type.'_'.auth()->user()->name.' has delete a expense category';
+
+                        // broadcast(new ReceivedNotification());
+                        ReceivedNotification::dispatch($message,auth()->user()->user_type);
                     }
 
                )
