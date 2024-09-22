@@ -39,9 +39,11 @@ use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 use Maatwebsite\Excel\Excel;
 use Flasher\SweetAlert\Prime\SweetAlertInterface;
+use WireUi\Traits\Actions;
 
 class IncomeList extends Component implements HasForms, HasTable
 {
+    use Actions;
     use InteractsWithTable;
     use InteractsWithForms;
 
