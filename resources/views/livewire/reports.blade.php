@@ -898,7 +898,7 @@
                                         <tr>
                                             <td class="border text-right text-gray-700  px-3 ">
                                                 &#8369;
-                                                {{ number_format($current_sales - $grandTotalExpenses_current, 2) }} S
+                                                {{ number_format($current_sales - $grandTotalExpenses_current, 2) }}
                                             </td>
                                             <td class="border text-right text-gray-700  px-3 ">
                                                 &#8369;
