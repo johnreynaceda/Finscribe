@@ -25,14 +25,13 @@ class SystemLogList extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(LogHistory::query()->orderBy('created_at', 'DESC'))
+            ->query(LogHistory::query()->with('user')->orderBy('created_at', 'DESC'))
             ->columns([
-                TextColumn::make('id')->label('FULLNAME')->formatStateUsing(
-                    fn($record) => $record->user->name ?? 'NO NAME/DELETED'
-                )->searchable(),
-                TextColumn::make('user')->label('USER ROLE')->formatStateUsing(
-                    fn($record) => $record->user->name == null ? 'NO NAME/DELETED' : strtoupper($record->user->user_type)
-                )->searchable(),
+                TextColumn::make('user.name')->label('FULLNAME')->searchable(),
+                TextColumn::make('user.user_type')->label('FULLNAME')->searchable(),
+                // TextColumn::make('user')->label('USER ROLE')->formatStateUsing(
+                //     fn($record) => $record->user->name == null ? 'NO NAME/DELETED' : strtoupper($record->user->user_type)
+                // )->searchable(),
                 TextColumn::make('action')->label('ACTIONS')->searchable(),
                 TextColumn::make('created_at')->label('DATE & TIME STAMP')->date('F d, Y h:i A')->searchable(),
             ])
