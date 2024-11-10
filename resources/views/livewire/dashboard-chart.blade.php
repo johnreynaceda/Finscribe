@@ -1,4 +1,4 @@
-<div class="bg-white p-5 mt-10 rounded-xl">
+<div class="bg-white p-5  rounded-xl">
     <div class=" flex justify-between items-center">
         <div>
             <h1 class="font-semibold text-2xl">EXPENSES & REVENUE</h1>

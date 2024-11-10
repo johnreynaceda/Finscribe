@@ -1,7 +1,7 @@
 <div>
     <div class="grid grid-cols-2 gap-10 ">
-        <div>
-            <div class=" p-5 bg-white rounded-xl">
+        <div class="bg-white">
+            <div class=" p-5  rounded-xl">
                 <div class="  flex justify-between items-center">
                     <div>
                         <div>
@@ -17,13 +17,11 @@
                     <canvas id="myChart" class="w-full" height="400"></canvas>
                 </div>
 
-                <div>
-                    <livewire:dashboard-chart />
-                </div>
+
             </div>
         </div>
         <div class="space-y-5">
-            <div class="shadow-md p-5 rounded-xl bg-white">
+            {{-- <div class="shadow-md p-5 rounded-xl bg-white">
                 <h1 class="font-medium">Recently Used By</h1>
                 <div class="mt-5">
                     <ul role="list" class="divide-y divide-gray-100">
@@ -54,10 +52,12 @@
                         @endforelse
                     </ul>
                 </div>
+            </div> --}}
+
+            {{-- <livewire:data-expense /> --}}
+            <div>
+                <livewire:dashboard-chart />
             </div>
-
-            <livewire:data-expense />
-
         </div>
 
     </div>
