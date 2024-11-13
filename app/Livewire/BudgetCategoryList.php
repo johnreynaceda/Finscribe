@@ -69,7 +69,7 @@ class BudgetCategoryList extends Component implements HasForms, HasTable
                         ExpenseCategory::pluck('name', 'id'),
                     )->required()->unique(),
                     TextInput::make('amount')->label('Alloted Amount')->numeric()->required(),
-                ])->modalWidth('xl')
+                ])->modalWidth('xl')->createAnother(false)
             ])
             ->columns([
                 TextColumn::make('expenseCategory.name')->label('EXPENSE NAME'),

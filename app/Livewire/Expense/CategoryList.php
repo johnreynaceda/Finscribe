@@ -65,7 +65,7 @@ class CategoryList extends Component implements HasForms, HasTable
                     }
                 )->form([
                     TextInput::make('name')->required(),
-                ])->modalWidth('xl')
+                ])->modalWidth('xl')->createAnother(false)
             ])
             ->columns([
                 TextColumn::make('name')->label('NAME'),

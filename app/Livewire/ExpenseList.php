@@ -89,7 +89,7 @@ class ExpenseList extends Component implements HasForms, HasTable
                     DatePicker::make('date')->required()
                     // Textarea::make('notes'),
 
-                ])->modalWidth('xl')
+                ])->modalWidth('xl')->createAnother(false)
             ])
             ->columns([
                 TextColumn::make('expenseSubCategory.name')->label('CATEGORY NAME'),

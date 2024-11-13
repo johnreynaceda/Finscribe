@@ -100,7 +100,7 @@ class UserRequest extends Component implements HasForms, HasTable
                     TextInput::make('contact')->required()->numeric(),
                     DatePicker::make('birthdate')
                     ])
-                ])->modalWidth('xl')->modalHeading('Create User')
+                ])->modalWidth('xl')->modalHeading('Create User')->createAnother(false)
             ])
             ->columns([
                 TextColumn::make('name')->label('FULLNAME'),

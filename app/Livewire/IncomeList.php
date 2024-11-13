@@ -90,7 +90,7 @@ class IncomeList extends Component implements HasForms, HasTable
                 )->form([
                     ViewField::make('upload')
                     ->view('filament.forms.file_upload')
-                ])->modalWidth('xl')->modalSubmitActionLabel('Upload')
+                ])->modalWidth('xl')->modalSubmitActionLabel('Upload')->createAnother(false)
             ])
             ->columns([
                 TextColumn::make('date')->date()->label('DATE')->alignRight(),

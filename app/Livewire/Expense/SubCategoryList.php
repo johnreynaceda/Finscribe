@@ -69,7 +69,7 @@ class SubCategoryList extends Component implements HasForms, HasTable
                 )->form([
                     Select::make('expense_category_id')->label('Expense Category')->options(ExpenseCategory::all()->pluck('name', 'id'))->required(),
                     TextInput::make('name')->required(),
-                ])->modalWidth('xl')
+                ])->modalWidth('xl')->createAnother(false)
             ])
             ->columns([
                 TextColumn::make('name')->label('NAME'),
